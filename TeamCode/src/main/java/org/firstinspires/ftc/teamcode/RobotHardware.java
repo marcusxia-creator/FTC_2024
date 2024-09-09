@@ -15,16 +15,26 @@ public class RobotHardware {
     public MotorEx rightodometry;
     public MotorEx centerodometry;
 
+    public MotorEx horizontalMotor;
+    public MotorEx verticalMotorLeft;
+    public MotorEx verticalMotorRight;
+
     public HardwareMap hardwareMap;
 
 
     public void init(HardwareMap hardwareMap) {
         this.hardwareMap = hardwareMap; // store the hardwareMap reference
 
+        // set drivebase motors
         frontLeftMotor = new MotorEx(hardwareMap, "FL_Motor", Motor.GoBILDA.RPM_435);
         backLeftMotor = new MotorEx(hardwareMap, "BL_Motor", Motor.GoBILDA.RPM_435);
         frontRightMotor = new MotorEx(hardwareMap, "FR_Motor", Motor.GoBILDA.RPM_435);
         backRightMotor = new MotorEx(hardwareMap, "BR_Motor", Motor.GoBILDA.RPM_435);
+
+        // set slides motors
+        horizontalMotor = new MotorEx(hardwareMap, "hslide_Motor", Motor.GoBILDA.RPM_312);
+        verticalMotorLeft = new MotorEx(hardwareMap, "vslideL_Motor", Motor.GoBILDA.RPM_312);
+        verticalMotorRight = new MotorEx(hardwareMap, "vslideR_Motor", Motor.GoBILDA.RPM_312);
 
         // set odometry
         leftodometry = new MotorEx(hardwareMap, "FL_Motor");// set odometry
@@ -42,6 +52,7 @@ public class RobotHardware {
         backLeftMotor.setRunMode(Motor.RunMode.RawPower); //set motor mode
         frontRightMotor.setRunMode(Motor.RunMode.RawPower); // set motor mode
         backRightMotor.setRunMode((Motor.RunMode.RawPower)); // set motor mode
+        verticalMotorRight.setInverted(true); // Revers the vslide motor
 
         // set robot motor power 0
         frontLeftMotor.set(0);
