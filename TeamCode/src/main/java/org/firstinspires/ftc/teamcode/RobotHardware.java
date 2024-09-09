@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class RobotHardware {
@@ -10,7 +9,6 @@ public class RobotHardware {
     public MotorEx backLeftMotor;
     public MotorEx frontRightMotor;
     public MotorEx backRightMotor;
-    public BNO055IMU imu;
     public MotorEx leftodometry;
     public MotorEx rightodometry;
     public MotorEx centerodometry;
@@ -21,6 +19,7 @@ public class RobotHardware {
     public void init(HardwareMap hardwareMap) {
         this.hardwareMap = hardwareMap; // store the hardwareMap reference
 
+        // set drivebase motors
         frontLeftMotor = new MotorEx(hardwareMap, "FL_Motor", Motor.GoBILDA.RPM_435);
         backLeftMotor = new MotorEx(hardwareMap, "BL_Motor", Motor.GoBILDA.RPM_435);
         frontRightMotor = new MotorEx(hardwareMap, "FR_Motor", Motor.GoBILDA.RPM_435);
@@ -48,19 +47,11 @@ public class RobotHardware {
         frontRightMotor.set(0);
         backLeftMotor.set(0);
         backRightMotor.set(0);
+        // reset encoders when stop
+        resetDriveEncoders();
 
     }
-    // Initialize IMU
-    public void initIMU() {
-        // get imu from hardwareMap
-        imu = hardwareMap.get(BNO055IMU.class, "Adafruit_IMU");
-        // Initialize IMU parameter setup
-        BNO055IMU.Parameters imuParameters = new BNO055IMU.Parameters();
-        imuParameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        imuParameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        // initialize IMU
-        imu.initialize(imuParameters);
-    }
+
     // reset odometry encoder
     public void resetDriveEncoders(){
         leftodometry.stopAndResetEncoder();
