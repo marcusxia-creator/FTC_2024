@@ -106,9 +106,6 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    packagingOptions {
-        pickFirst '**/*.so'
-    }
     sourceSets.main {
         jni.srcDirs = []
         jniLibs.srcDir rootProject.file('libs')
@@ -117,5 +114,6 @@ android {
 }
 
 repositories {
+    mavenCentral()
 }
 
