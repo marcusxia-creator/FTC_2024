@@ -3,34 +3,37 @@ package org.firstinspires.ftc.teamcode;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU;
 
 public class RobotHardware {
     public MotorEx frontLeftMotor;
     public MotorEx backLeftMotor;
     public MotorEx frontRightMotor;
     public MotorEx backRightMotor;
-    //public BNO055IMU imu;
-    public IMU imu;
     public MotorEx leftodometry;
     public MotorEx rightodometry;
     public MotorEx centerodometry;
+    public IMU imu;
+
+
     public HardwareMap hardwareMap;
 
 
     public void init(HardwareMap hardwareMap) {
         this.hardwareMap = hardwareMap; // store the hardwareMap reference
 
+        // set drivebase motors
         frontLeftMotor = new MotorEx(hardwareMap, "FL_Motor", Motor.GoBILDA.RPM_435);
         backLeftMotor = new MotorEx(hardwareMap, "BL_Motor", Motor.GoBILDA.RPM_435);
         frontRightMotor = new MotorEx(hardwareMap, "FR_Motor", Motor.GoBILDA.RPM_435);
         backRightMotor = new MotorEx(hardwareMap, "BR_Motor", Motor.GoBILDA.RPM_435);
 
+
         // set odometry
         leftodometry = new MotorEx(hardwareMap, "FL_Motor");// set odometry
-        rightodometry = new  MotorEx(hardwareMap,"BL_Motor");// set odometry
-        centerodometry = new MotorEx(hardwareMap,"FR_Motor");// set odometry
+        rightodometry = new MotorEx(hardwareMap, "BL_Motor");// set odometry
+        centerodometry = new MotorEx(hardwareMap, "FR_Motor");// set odometry
         // reset encoder
         leftodometry.resetEncoder();
         rightodometry.resetEncoder();
@@ -49,9 +52,8 @@ public class RobotHardware {
         frontRightMotor.set(0);
         backLeftMotor.set(0);
         backRightMotor.set(0);
-
     }
-    // Initialize IMU
+        // Initialize IMU
     public void initIMU() {
         // get imu from hardwareMap
         //imu = hardwareMap.get(BNO055IMU.class, "Adafruit_IMU");
@@ -68,8 +70,9 @@ public class RobotHardware {
                 new IMU.Parameters(new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP, RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD))
         );
     }
-    // reset odometry encoder
-    public void resetDriveEncoders(){
+        // reset encoders when stop
+
+    public void resetDriveEncoders() {
         leftodometry.stopAndResetEncoder();
         rightodometry.stopAndResetEncoder();
         centerodometry.stopAndResetEncoder();
