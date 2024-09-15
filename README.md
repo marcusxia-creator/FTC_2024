@@ -4,12 +4,12 @@
 ### Used FTC lib MotorEX and GamePad.
 ### Used FTC lib Mecanumdrive class.
 ### Created General Hardware Mapping Class.
- FL_Motor port 0
- BL_Motor Port 1
- FR_Motor port 2
- BR_Motor port 3
+Hardware mapping including:
+
+ FL_Motor port 0 -- BL_Motor Port 1 -- FR_Motor port 2 -- BR_Motor port 3
 
  IMU is Rev control hub IMU 
+ 
  IMU initialization - is using IMU generic interface
 
 

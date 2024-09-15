@@ -2,7 +2,9 @@ package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU;
 
 public class RobotHardware {
     public MotorEx frontLeftMotor;
@@ -14,6 +16,8 @@ public class RobotHardware {
     public MotorEx centerodometry;
 
     public HardwareMap hardwareMap;
+
+    public IMU imu;
 
 
     public void init(HardwareMap hardwareMap) {
@@ -50,6 +54,24 @@ public class RobotHardware {
         // reset encoders when stop
         resetDriveEncoders();
 
+    }
+
+    // Initialize IMU
+    public void initIMU() {
+        // get imu from hardwareMap
+        //imu = hardwareMap.get(BNO055IMU.class, "Adafruit_IMU");
+        // Initialize IMU parameter setup
+        //BNO055IMU.Parameters imuParameters = new BNO055IMU.Parameters();
+        //imuParameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        //imuParameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        // initialize IMU
+        //imu.initialize(imuParameters);
+
+        // set up REVimu
+        imu = hardwareMap.get(IMU.class, "imu");
+        imu.initialize(
+                new IMU.Parameters(new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP, RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD))
+        );
     }
 
     // reset odometry encoder

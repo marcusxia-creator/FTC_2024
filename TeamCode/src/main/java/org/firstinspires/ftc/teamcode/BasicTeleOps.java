@@ -4,53 +4,57 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.arcrobotics.ftclib.hardware.RevIMU;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
-@TeleOp (name="BasicTeleOps_ftclib", group = "linear OpMode")
+
+@TeleOp (name="BasicTeleOps_FTCLib_MDrive", group = "linear OpMode")
 public class BasicTeleOps extends OpMode {
 
     public RobotHardware robot;
     public GamepadEx gamepad;
     public MecanumDrive robotDrive;
-    static final boolean FIELD_CENTRIC = false;
-    public RevIMU imu;
+    private final boolean FIELD_CENTRIC = false;
 
     @Override
     public void init() {
         robot = new RobotHardware();
         robot.init(hardwareMap);
-        RevIMU imu = new RevIMU(hardwareMap);
-        imu.init();
+        robot.initIMU();
         robotDrive = new MecanumDrive(robot.frontLeftMotor, robot.frontRightMotor, robot.backLeftMotor, robot.backRightMotor);
-        gamepad = new GamepadEx(gamepad1);
+        gamepad = new GamepadEx(gamepad2);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
     }
 
     @Override
     public void loop() {
-        robotMecaDrive(FIELD_CENTRIC, robotDrive, gamepad);
+        robotMecaDrive(!FIELD_CENTRIC, robotDrive, gamepad);
         telemetry.addData("Status", "Robot running");
         telemetry.update();
 
     }
 
     private void robotMecaDrive(boolean FIELD_CENTRIC, MecanumDrive robotDrive, GamepadEx gamepad) {
+        final double powerFactor = 0.7;
+        double  strafePower =  gamepad.getRightX();
+        double  drivePower =  -gamepad.getRightY();
+        double  rotatePower =  gamepad.getLeftX();
+
         if (!FIELD_CENTRIC) {
             robotDrive.driveRobotCentric(
-                    Range.clip(gamepad.getLeftX(), -1.0, 1.0),
-                    Range.clip(gamepad.getLeftY(), -1.0, 1.0),
-                    Range.clip(gamepad.getRightX(), -1.0, 1.0),
+                    Range.clip(strafePower*powerFactor, -1.0, 1.0),
+                    Range.clip(drivePower*powerFactor  , -1.0, 1.0),
+                    Range.clip(rotatePower*powerFactor, -1.0, 1.0),
                     false
             );
         } else {
             robotDrive.driveFieldCentric(
-                    Range.clip(gamepad.getLeftX(), -1.0, 1.0),
-                    Range.clip(gamepad.getLeftY(), -1.0, 1.0),
-                    Range.clip(gamepad.getRightX(), -1.0, 1.0),
-                    imu.getRotation2d().getDegrees(),
+                    Range.clip(strafePower*powerFactor, -1.0, 1.0),
+                    Range.clip(drivePower*powerFactor, -1.0, 1.0),
+                    Range.clip(rotatePower*powerFactor, -1.0, 1.0),
+                    robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES),
                     false
             );
         }
