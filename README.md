@@ -4,11 +4,11 @@
 #### Created General Hardware Mapping Class.
 1. Hardware mapping including:
 
- FL_Motor port 0 -- BL_Motor Port 1 -- FR_Motor port 2 -- BR_Motor port 3
+	FL_Motor port 0 -- BL_Motor Port 1 -- FR_Motor port 2 -- BR_Motor port 3
 
- IMU is Rev control hub IMU 
+	IMU is Rev control hub IMU 
  
- IMU initialization - is using IMU generic interface
+	IMU initialization - is using IMU generic interface
 
 2. Created RobotDrive class for Mecanmum Wheel Drive, with the selection of FIELDCENTERIC or ROBOTCENTERIC by using "Start" button.
 
