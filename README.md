@@ -1,3 +1,9 @@
+## Team 24135 Notes
+This repository is modified with
+###	1. Hardware map setup class.
+###	2. Created RobotDrive class for Mecanmum Wheel Drive, with the selection of FIELDCENTERIC or ROBOTCENTERIC by using "Start" button.
+###	3. Created BasicTeleOps class to drive the 'testrobot'.
+
 ## NOTICE
 
 This repository contains the public FTC SDK for the INTO THE DEEP (2024-2025) competition season.
