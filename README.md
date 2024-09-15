@@ -1,6 +1,9 @@
-## NOTICE
+## Team 24135 Notes
+### This is the 24135 branch based on the FTC SDK for the INTO THE DEEP (2024-2025) competition season.
+### This branch is Team 24135 modification with FTClib library
+### This branch is created for learning and testing of RoadRunner
 
-This repository contains the FTClib library by cybertronic
+## NOTICE
 
 This repository contains the public FTC SDK for the INTO THE DEEP (2024-2025) competition season.
 
