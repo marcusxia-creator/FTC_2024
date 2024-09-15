@@ -23,7 +23,7 @@ public class BasicTeleOps extends OpMode {
         robot.init(hardwareMap);
         RevIMU imu = new RevIMU(hardwareMap);
         imu.init();
-        MecanumDrive robotDrive = new MecanumDrive(robot.frontLeftMotor, robot.frontRightMotor, robot.backLeftMotor, robot.backRightMotor);
+        robotDrive = new MecanumDrive(robot.frontLeftMotor, robot.frontRightMotor, robot.backLeftMotor, robot.backRightMotor);
         gamepad = new GamepadEx(gamepad1);
         telemetry.addData("Status", "Initialized");
         telemetry.update();
