@@ -3,7 +3,10 @@ package org.firstinspires.ftc.teamcode;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.BACK;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.START;
 
+import android.annotation.SuppressLint;
+
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -32,6 +35,7 @@ public class RobotDrive {
         robot.initIMU();
     }
 
+    @SuppressLint("DefaultLocale")
     public void driveLoop() {
         // Toggle control mode
         if (gamepad.getButton(START) && !startPressed) {
@@ -70,15 +74,11 @@ public class RobotDrive {
         telemetry.addData("strafe", strafe);
         telemetry.addData("rotate", rotate);
         telemetry.addLine("-------------------");
-        telemetry.addData("leftBackMotorPower", robot.frontRightMotor.getVelocity());
+        telemetry.addData("MotorVelocity-FL-FR-BL-BR", String.format("LF:%g, RF:%g, LB:%g,RB:%g", getVelocity()[0], getVelocity()[1], getVelocity()[2], getVelocity()[3]));
         telemetry.addData("RightFrontMotorPower", robot.backLeftMotor.getVelocity());
         telemetry.addData("RightBackMotorPower", robot.backRightMotor.getVelocity());
         telemetry.addLine("-------------------");
-        telemetry.addData("leftOdometryEncoder", robot.leftodometry.getCurrentPosition());
-        telemetry.addData("CenterOdometryEncoder", robot.rightodometry.getCurrentPosition());
-        telemetry.addData("rightOdometryEncoder", robot.centerodometry.getCurrentPosition());
-        telemetry.addLine("-------------------");
-        telemetry.addData("EncoderCounts", String.valueOf(getEncoderCounts()[0]),getEncoderCounts()[1],getEncoderCounts()[2]);
+        telemetry.addData("EncoderCounts Left-Right_Center", String.valueOf(getEncoderCounts()[0]),getEncoderCounts()[1],getEncoderCounts()[2]);
         telemetry.addLine("-------------------");
         telemetry.addData("heading", currentHeading);
         telemetry.addLine("-------------------");
@@ -138,11 +138,18 @@ public class RobotDrive {
 
         // Set motor powers
         double powerFactor = 0.5;
-        robot.frontLeftMotor.set(Range.clip(frontLeftPower * powerFactor, -1.0, 1.0));
-        robot.frontRightMotor.set(Range.clip(frontRightPower * powerFactor, -1.0, 1.0));
-        robot.backLeftMotor.set(Range.clip(backLeftPower * powerFactor, -1.0, 1.0));
-        robot.backRightMotor.set(Range.clip(backRightPower * powerFactor, -1.0, 1.0));
+        setMotorPower(frontLeftPower * powerFactor,robot.frontLeftMotor);
+        setMotorPower(frontRightPower * powerFactor,robot.frontRightMotor);
+        setMotorPower(backLeftPower * powerFactor,robot.backLeftMotor);
+        setMotorPower(backRightPower * powerFactor,robot.backRightMotor);
+        //robot.frontLeftMotor.set(Range.clip(frontLeftPower * powerFactor, -1.0, 1.0));
+        //robot.frontRightMotor.set(Range.clip(frontRightPower * powerFactor, -1.0, 1.0));
+        //robot.backLeftMotor.set(Range.clip(backLeftPower * powerFactor, -1.0, 1.0));
+        //robot.backRightMotor.set(Range.clip(backRightPower * powerFactor, -1.0, 1.0));
 
+    }
+    private void setMotorPower(double power, Motor motor){
+        motor.set(Range.clip(power,-1.0,1.0));
     }
     // Method to get left encoder count
     public int [] getEncoderCounts() {
@@ -151,6 +158,15 @@ public class RobotDrive {
         counts[1] = robot.rightodometry.getCurrentPosition();
         counts[2] = robot.centerodometry.getCurrentPosition();
         return counts;
+    }
+
+    public double[] getVelocity() {
+        double[] velocities = new double[4];
+        velocities[0] = robot.frontLeftMotor.getVelocity();
+        velocities[1] = robot.frontRightMotor.getVelocity();
+        velocities[2] = robot.backLeftMotor.getVelocity();
+        velocities[3] = robot.backRightMotor.getVelocity();
+        return velocities;
     }
 
     public enum ControlMode {
