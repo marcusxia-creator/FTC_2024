@@ -1,131 +1,103 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.robot.Robot;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class FiniteMachineStateArm {
-    public FiniteMachineStateArm(double dumpIdle, double dumpDeposit, double dumpTime, int liftLow, int liftHigh) {
-        DUMP_IDLE = dumpIdle;
-        DUMP_DEPOSIT = dumpDeposit;
-        DUMP_TIME = dumpTime;
-        LIFT_LOW = liftLow;
-        LIFT_HIGH = liftHigh;
-    }
-    /*
-     * Some declarations that are boilerplate are
-     * skipped for the sake of brevity.
-     * Since there are no real values to use, named constants will be used.
-     */
+    private final GamepadEx gamepad;
+    private final RobotHardware robot;
+    private ElapsedTime debounceTimer = new ElapsedTime(); // Timer for debouncing
+    private Telemetry telemetry;
 
+    private final double DEBOUNCE_THRESHOLD = 0.2; // Debouncing threshold for button presses
+
+    public FiniteMachineStateArm(RobotHardware robot, GamepadEx gamepad, Telemetry telemetry, double DUMP_IDLE, double DUMP_DEPOSIT, double DUMP_TIME, int LIFT_LOW, int LIFT_HIGH) {
+        this.gamepad = gamepad;
+        this.robot = robot;
+        this.DUMP_IDLE = DUMP_IDLE;
+        this.DUMP_DEPOSIT = DUMP_DEPOSIT;
+        this.DUMP_TIME = DUMP_TIME;
+        this.LIFT_LOW = LIFT_LOW;
+        this.LIFT_HIGH = LIFT_HIGH;
+        this.telemetry = telemetry;
+    }
 
     public enum LiftState {
         LIFT_START,
         LIFT_EXTEND,
         LIFT_DUMP,
         LIFT_RETRACT
-    };
-
-    // The liftState variable is declared out here
-    // so its value persists between loop() calls
-    LiftState liftState = LiftState.LIFT_START;
-
-    // Some hardware access boilerplate; these would be initialized in init()
-    // the lift motor, it's in RUN_TO_POSITION mode
-    public DcMotorEx liftMotor;
-
-    // the dump servo
-    public Servo liftDump;
-    // used with the dump servo, this will get covered in a bit
-    ElapsedTime liftTimer = new ElapsedTime();
-
-    final double DUMP_IDLE; // the idle position for the dump servo
-    final double DUMP_DEPOSIT; // the dumping position for the dump servo
-
-    // the amount of time the dump servo takes to activate in seconds
-    final double DUMP_TIME;
-
-    final int LIFT_LOW; // the low encoder position for the lift
-    final int LIFT_HIGH; // the high encoder position for the lift
-
-    public FiniteMachineStateArm(RobotHardware robot, GamepadEx gamepad, Telemetry telemetry){
-        this robot = robot;
-        this gamepad = gamepad;
-        this telemetry = telemetry;
     }
+
+    private LiftState liftState = LiftState.LIFT_START; // Persisting state
+    private ElapsedTime liftTimer = new ElapsedTime(); // Timer for controlling dumping time
+
+    final double DUMP_IDLE;   // Idle position for the dump servo
+    final double DUMP_DEPOSIT; // Dumping position for the dump servo
+    final double DUMP_TIME;   // Time for dumping action in seconds
+    final int LIFT_LOW;       // Encoder position for the low position
+    final int LIFT_HIGH;      // Encoder position for the high position
+
     public void init() {
         liftTimer.reset();
-
-        // hardware initialization code goes here
-        // this needs to correspond with the configuration used
-        liftMotor = hardwareMap.get(DcMotorEx.class, "liftMotor");
-        liftDump = hardwareMap.get(Servo.class, "liftDump");
-
         robot.liftMotor.setTargetPosition(LIFT_LOW);
-        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.liftMotor.set(1.0); // Make sure lift motor is on
     }
 
-    public void armloop(RobotHardware robot, GamepadEx gamepad, Telemetry telemetry) {
-        robot.liftMotor.setPower(1.0);
+    public void armLoop() {
+        // Display current lift state and telemetry feedback
+        telemetry.addData("Lift State", liftState.toString());
+        telemetry.update();
 
         switch (liftState) {
             case LIFT_START:
-                // Waiting for some input
-                if (gamepad.getButton(GamepadKeys.Button.X)) {
-                    // x is pressed, start extending
+                // Debounce the button press for starting the lift extend
+                if (gamepad.getButton(GamepadKeys.Button.X) && debounceTimer.seconds() > DEBOUNCE_THRESHOLD) {
+                    debounceTimer.reset();
                     robot.liftMotor.setTargetPosition(LIFT_HIGH);
                     liftState = LiftState.LIFT_EXTEND;
                 }
                 break;
             case LIFT_EXTEND:
-                // check if the lift has finished extending,
-                // otherwise do nothing.
-                if (Math.abs(robot.liftMotor.getCurrentPosition() - LIFT_HIGH) < 10) {
-                    // our threshold is within
-                    // 10 encoder ticks of our target.
-                    // this is pretty arbitrary, and would have to be
-                    // tweaked for each robot.
-
-                    // set the lift dump to dump
-                    robot.liftDump.setTargetPosition(DUMP_DEPOSIT);
-
+                // Check if the lift has reached the high position
+                if (isLiftAtPosition(LIFT_HIGH)) {
+                    robot.intakeServo.setPosition(DUMP_DEPOSIT); // Move servo to dump position
                     liftTimer.reset();
                     liftState = LiftState.LIFT_DUMP;
                 }
                 break;
             case LIFT_DUMP:
+                // Wait for the dump time to pass
                 if (liftTimer.seconds() >= DUMP_TIME) {
-                    // The robot waited long enough, time to start
-                    // retracting the lift
-                    robot.liftDump.setTargetPosition(DUMP_IDLE);
-                    robot.liftMotor.setTargetPosition(LIFT_LOW);
+                    robot.intakeServo.setPosition(DUMP_IDLE); // Reset servo to idle
+                    robot.liftMotor.setTargetPosition(LIFT_LOW); // Start retracting the lift
                     liftState = LiftState.LIFT_RETRACT;
                 }
                 break;
             case LIFT_RETRACT:
-                if (Math.abs(robot.liftMotor.getCurrentPosition() - LIFT_LOW) < 10) {
+                // Check if the lift has reached the low position
+                if (isLiftAtPosition(LIFT_LOW)) {
+                    robot.liftMotor.set(0); // Stop the motor after reaching the low position
                     liftState = LiftState.LIFT_START;
                 }
                 break;
             default:
-                // should never be reached, as liftState should never be null
                 liftState = LiftState.LIFT_START;
+                break;
         }
 
-        // small optimization, instead of repeating ourselves in each
-        // lift state case besides LIFT_START for the cancel action,
-        // it's just handled here
+        // Handle lift cancel action if 'Y' button is pressed
         if (gamepad.getButton(GamepadKeys.Button.Y) && liftState != LiftState.LIFT_START) {
             liftState = LiftState.LIFT_START;
+            robot.liftMotor.set(0); // Ensure the motor is stopped
         }
     }
-}
 
+    // Helper method to check if the lift is within the desired position threshold
+    private boolean isLiftAtPosition(int targetPosition) {
+        return Math.abs(robot.liftMotor.getCurrentPosition() - targetPosition) < 10;
+    }
+}
