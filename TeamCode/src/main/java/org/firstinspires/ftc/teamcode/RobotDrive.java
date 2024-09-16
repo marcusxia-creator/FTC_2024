@@ -75,8 +75,6 @@ public class RobotDrive {
         telemetry.addData("rotate", rotate);
         telemetry.addLine("-------------------");
         telemetry.addData("MotorVelocity-FL-FR-BL-BR", String.format("LF:%g, RF:%g, LB:%g,RB:%g", getVelocity()[0], getVelocity()[1], getVelocity()[2], getVelocity()[3]));
-        telemetry.addData("RightFrontMotorPower", robot.backLeftMotor.getVelocity());
-        telemetry.addData("RightBackMotorPower", robot.backRightMotor.getVelocity());
         telemetry.addLine("-------------------");
         telemetry.addData("EncoderCounts Left-Right_Center", String.valueOf(getEncoderCounts()[0]),getEncoderCounts()[1],getEncoderCounts()[2]);
         telemetry.addLine("-------------------");
