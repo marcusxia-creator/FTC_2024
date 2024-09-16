@@ -80,7 +80,7 @@ public class RobotDrive {
         telemetry.addLine("-------------------");
         telemetry.addData("heading", currentHeading);
         telemetry.addLine("-------------------");
-        telemetry.addData("control mode", controlMode.toString());
+        telemetry.addData("control mode - START Button", controlMode.toString());
         telemetry.update();
     }
 
