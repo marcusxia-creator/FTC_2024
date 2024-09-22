@@ -123,6 +123,8 @@ public class SampleMecanumDrive extends MecanumDrive {
         }
 
         // TODO: reverse any motors using DcMotor.setDirection()
+        rightFront.setDirection(DcMotor.Direction.REVERSE); // add if needed
+        rightRear.setDirection(DcMotor.Direction.REVERSE); // add if needed
 
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();
@@ -291,6 +293,11 @@ public class SampleMecanumDrive extends MecanumDrive {
     @Override
     public double getRawExternalHeading() {
         return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+    }
+
+    @Override
+    public Double getExternalHeadingVelocity() {
+        return (double) imu.getRobotAngularVelocity(AngleUnit.RADIANS).zRotationRate;
     }
 
     @Override
