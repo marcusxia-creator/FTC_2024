@@ -39,7 +39,7 @@ public class BasicTeleOps extends OpMode {
     private void robotMecaDrive(boolean FIELD_CENTRIC, MecanumDrive robotDrive, GamepadEx gamepad) {
         final double powerFactor = 0.7;
         double  strafePower =  gamepad.getRightX();
-        double  drivePower =  -gamepad.getRightY();
+        double  drivePower =   gamepad.getRightY();
         double  rotatePower =  gamepad.getLeftX();
 
         if (!FIELD_CENTRIC) {

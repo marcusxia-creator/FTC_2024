@@ -39,8 +39,8 @@ public class RobotHardware {
         centerodometry.resetEncoder();
 
         //set motor mode and motor direction
-        frontLeftMotor.setInverted(true);  // Reverse the left motor if needed
-        backLeftMotor.setInverted(true);  // Reverse the left motor if needed
+        frontLeftMotor.setInverted(false);  // Reverse the left motor if needed
+        backLeftMotor.setInverted(false);  // Reverse the left motor if needed
         frontLeftMotor.setRunMode(Motor.RunMode.RawPower); // set motor mode
         backLeftMotor.setRunMode(Motor.RunMode.RawPower); //set motor mode
         frontRightMotor.setRunMode(Motor.RunMode.RawPower); // set motor mode
