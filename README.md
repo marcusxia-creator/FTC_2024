@@ -12,6 +12,7 @@ Hardware mapping including:
  
  IMU initialization - is using IMU generic interface
 
+Added Odometry values on the drivestation.
 
 ## NOTICE
 
