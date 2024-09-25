@@ -11,9 +11,9 @@ public class Test {
     public DcMotor backLeftMotor;
     public DcMotor backRightMotor;
 
-    public Gamepad gamepad1;
 
-    public void RobotHardware(HardwareMap hardwaremap) {
+
+    public Test(HardwareMap hardwaremap) {
         frontLeftMotor = hardwaremap.get(DcMotor.class, "frontLeftMotor");
         frontRightMotor = hardwaremap.get(DcMotor.class, "frontRightMotor");
         backLeftMotor = hardwaremap.get(DcMotor.class, "backLeftMotor");
@@ -23,7 +23,7 @@ public class Test {
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
-    public void RobotDrive() {
+    public void RobotDrive(Gamepad gamepad1) {
         double y = -gamepad1.left_stick_y;
         double x = gamepad1.left_stick_x;
         double rx = gamepad1.right_stick_x;
