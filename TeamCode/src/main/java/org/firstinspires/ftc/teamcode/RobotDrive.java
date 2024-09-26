@@ -23,6 +23,20 @@ public class RobotDrive {
 
     private boolean startPressed = false;
     private boolean backPressed = false;
+    //declare Telemetry items
+    private Telemetry.Item status;
+    private Telemetry.Item imuAngle;
+    private Telemetry.Item leftMotorPower;
+    private Telemetry.Item rightMotorPower;
+    private Telemetry.Item leftEncoder;
+    private Telemetry.Item rightEncoder;
+    private Telemetry.Item drivePower;
+    private Telemetry.Item strafePower;
+    private Telemetry.Item rotatePower;
+    private Telemetry.Item motorVelocities;
+    private Telemetry.Item encoderCounts;
+    private Telemetry.Item heading;
+    private Telemetry.Item controlModeItem;
 
     public RobotDrive(RobotHardware robot, GamepadEx gamepad, Telemetry telemetry) {
         this.robot = robot;
@@ -33,6 +47,24 @@ public class RobotDrive {
     public void init() {
         // Initialize IMU from RobotHardware
         robot.initIMU();
+        telemetry.addData("Status", "Initializing...");
+
+        // Initialize telemetry items for dynamic updates
+        status = telemetry.addData("Status", "Run Time: ");
+        imuAngle = telemetry.addData("IMU Angle", "Initializing...");
+        leftMotorPower = telemetry.addData("Left Motor Power", 0);
+        rightMotorPower = telemetry.addData("Right Motor Power", 0);
+        leftEncoder = telemetry.addData("Left Encoder", 0);
+        rightEncoder = telemetry.addData("Right Encoder", 0);
+        drivePower = telemetry.addData("Drive Power", 0);
+        strafePower = telemetry.addData("Strafe Power", 0);
+        rotatePower = telemetry.addData("Rotate Power", 0);
+        motorVelocities = telemetry.addData("Motor Velocities", "");
+        encoderCounts = telemetry.addData("Encoder Counts", "");
+        heading = telemetry.addData("Heading", 0);
+        controlModeItem = telemetry.addData("Control Mode", controlMode.toString());
+
+        telemetry.update();
     }
 
     @SuppressLint("DefaultLocale")
@@ -67,22 +99,32 @@ public class RobotDrive {
         // Mecanum drive calculations
         setMecanumDrivePower(drive, strafe, rotate, currentHeading);
 
-        // Show elapsed time in telemetry
-        telemetry.addData("Status", "Run Time: " + debounceTimer.seconds());
-        telemetry.addLine("-------------------");
-        telemetry.addData("drive", drive);
-        telemetry.addData("strafe", strafe);
-        telemetry.addData("rotate", rotate);
-        telemetry.addLine("-------------------");
-        telemetry.addData("MotorVelocity-FL-FR-BL-BR", String.format("LF:%g, RF:%g, LB:%g,RB:%g", getVelocity()[0], getVelocity()[1], getVelocity()[2], getVelocity()[3]));
-        telemetry.addData("RightFrontMotorPower", robot.backLeftMotor.getVelocity());
-        telemetry.addData("RightBackMotorPower", robot.backRightMotor.getVelocity());
-        telemetry.addLine("-------------------");
-        telemetry.addData("EncoderCounts Left-Right_Center", String.valueOf(getEncoderCounts()[0]),getEncoderCounts()[1],getEncoderCounts()[2]);
-        telemetry.addLine("-------------------");
-        telemetry.addData("heading", currentHeading);
-        telemetry.addLine("-------------------");
-        telemetry.addData("control mode", controlMode.toString());
+        // Update telemetry with the latest data
+        updateTelemetry(drive, strafe, rotate, currentHeading);
+    }
+
+    private void updateTelemetry(double drive, double strafe, double rotate, double currentHeading) {
+        // Update existing telemetry items with new values
+        status.setValue(String.format("Run Time: %.2f", debounceTimer.seconds()));
+        imuAngle.setValue(String.format("%.2f", currentHeading));
+        leftMotorPower.setValue(robot.frontLeftMotor.getCPR());
+        rightMotorPower.setValue(robot.frontRightMotor.getCPR());
+        leftEncoder.setValue(robot.leftodometry.getCurrentPosition());
+        rightEncoder.setValue(robot.rightodometry.getCurrentPosition());
+
+        drivePower.setValue(drive);
+        strafePower.setValue(strafe);
+        rotatePower.setValue(rotate);
+
+        motorVelocities.setValue(String.format("LF:%g, RF:%g, LB:%g, RB:%g",
+                getVelocity()[0], getVelocity()[1], getVelocity()[2], getVelocity()[3]));
+
+        encoderCounts.setValue(String.format("L:%d, R:%d, C:%d",
+                getEncoderCounts()[0], getEncoderCounts()[1], getEncoderCounts()[2]));
+
+        heading.setValue(currentHeading);
+        controlModeItem.setValue(controlMode.toString());
+
         telemetry.update();
     }
 

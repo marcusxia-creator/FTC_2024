@@ -29,9 +29,7 @@ public class BasicTeleOps extends OpMode {
 
     @Override
     public void loop() {
-
         robotDrive.driveLoop(); // Use RobotDrive methods
         armDrive.armLoop();
-
     }
 }
