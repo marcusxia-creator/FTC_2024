@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 @TeleOp(name= "Test_Zirui", group = "OpMode")
 public class Test extends LinearOpMode {
@@ -12,7 +13,7 @@ public class Test extends LinearOpMode {
     public DcMotor backLeftMotor;
     public DcMotor backRightMotor;
 
-    public DcMotor intakeMotor;
+    public Gamepad gamepad1;
 
     @Override
     public void runOpMode() {
@@ -21,15 +22,8 @@ public class Test extends LinearOpMode {
         backLeftMotor = hardwareMap.get(DcMotor.class, "BL_Motor");
         backRightMotor = hardwareMap.get(DcMotor.class, "BR_Motor");
 
-        intakeMotor = hardwareMap.get(DcMotor.class, "In_Motor");
-        intakeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // Reset the motor encoder
-        intakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER); // Turn the motor back on when we are done
-
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        int res = 2;
-        int position = Math.round(res * 537.7);
 
         telemetry.addLine("Robot Initialized");
         telemetry.update();
@@ -42,8 +36,6 @@ public class Test extends LinearOpMode {
             double rx = gamepad1.left_stick_x;
 
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-
-            int position = intakeMotor.getCurrentPosition();
 
             double frontLeftMotorPower = (y + x + rx * 0.4) / denominator;
             double frontRightMotorPower = (y - x - rx * 0.4) / denominator;
@@ -63,7 +55,6 @@ public class Test extends LinearOpMode {
             telemetry.addData("Joystick x", x);
             telemetry.addData("Joystick y", y);
             telemetry.addData("Joystick rx", rx);
-            telemetry.addData("Intake Motor position", position);
             telemetry.update();
         }
     }
