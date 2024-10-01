@@ -48,13 +48,13 @@ public class SlideTestFMS extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         // Position of the arm when it's lifted
-        int slideUp = -1000;
+        int slideUp = -1450;
 
         // Position of the arm when it's down
         int slideDown = 20;
         // position of servo
-        double intakeOut = 0.5;
-        double intakeIn = 0;
+        double intakeOut = 0.2;
+        double intakeIn = 0.9;
 
         double grabPosition = 0.5;
 
@@ -84,7 +84,7 @@ public class SlideTestFMS extends LinearOpMode {
         slideMotor.setPower(0.1);
 
         //initial intakeServo
-        intakeServo.setPosition(0.2);
+        intakeServo.setPosition(0);
 
         //telemetry
         telemetry.addData("Robot Status", "Initialized");
