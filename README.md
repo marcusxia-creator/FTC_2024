@@ -4,7 +4,11 @@
 #### Created General Hardware Mapping Class.
 1. Hardware mapping including:
 
-	FL_Motor port 0 -- BL_Motor Port 1 -- FR_Motor port 2 -- BR_Motor port 3
+	FL_Motor: port 0 -- BL_Motor: Port 1 -- FR_Motor: port 2 -- BR_Motor port 3 (control hub)
+    
+    VS_Motor_1: port 0 (expansion hub)
+    
+    IntakeServo - port 0   
 
 	IMU is Rev control hub IMU 
  
