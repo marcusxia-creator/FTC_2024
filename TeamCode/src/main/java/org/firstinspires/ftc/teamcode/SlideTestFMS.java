@@ -22,7 +22,7 @@ public class SlideTestFMS extends LinearOpMode {
     private boolean buttonPressed = false;
 
     private double DEBOUNCE_INTERVAL = 0.3;
-    final double grabTime = 30;
+    final double grabTime = 3;
 
     public enum SLIDESTATE {
         SLIDE_START,
@@ -129,7 +129,7 @@ public class SlideTestFMS extends LinearOpMode {
                 case SLIDE_RETRACT:
                     slideMotor.setTargetPosition(slideDown);
                     slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    slideMotor.setPower(0.6);
+                    slideMotor.setPower(0.3);
                     SlideState = SLIDESTATE.SLIDE_START;
                     break;
             }
