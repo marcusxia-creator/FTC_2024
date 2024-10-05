@@ -1,3 +1,10 @@
+## FTC24135
+
+TeleOps - using FTClib Mecanum library
+        - FTClib mecanum does not require reverse the left side drive motor direction. motor rotation reverse is false.
+        - hard coded robotic centric drive
+        - incorporated the odometry showing odometry angle, odometry position -X and position -Y
+
 ## TeamCode Module
 
 Welcome!
