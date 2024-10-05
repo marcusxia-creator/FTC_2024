@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import static java.lang.String.format;
+import static java.lang.String.valueOf;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
@@ -14,7 +15,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 
-@TeleOp (name="BasicTeleOps_FTCLib_MDrive", group = "linear OpMode")
+@TeleOp (name="BasicTeleOps_Testbot", group = "linear OpMode")
 public class BasicTeleOps extends OpMode {
 
     public RobotHardware robot;
@@ -26,7 +27,7 @@ public class BasicTeleOps extends OpMode {
     //declare position and heading tracking variables
     private double robotX = 0.0;
     private double robotY = 0.0;
-    private double robotHeading = 0.0;
+    private double robotHeading = 0.00;
     private int previousLeftEncoder = 0;
     private int previousRightEncoder = 0;
     private int previousCenterEncoder = 0;
@@ -40,6 +41,9 @@ public class BasicTeleOps extends OpMode {
     private Telemetry.Item encoderHeadings;
     private Telemetry.Item encoderXPos;
     private Telemetry.Item encoderYPos;
+    private Telemetry.Item _color_red;
+    private Telemetry.Item _color_blue;
+    private Telemetry.Item _color_green;
 
 
     @Override
@@ -57,15 +61,19 @@ public class BasicTeleOps extends OpMode {
         telemetry.addData("Status", "Initialized");
         status = telemetry.addData("Status","running");
         headings = telemetry.addData("IMU Angle", String.format("%.2f", robot.imu.getRobotYawPitchRollAngles()));
-        encoderHeadings = telemetry.addData("encoder_Headings ", new String("%.2f", robotHeading));
+        encoderHeadings = telemetry.addData("encoder_Headings ", String.format("%.2f", robotHeading));
         encoderXPos = telemetry.addData("encoder_X position ", 0);
         encoderYPos = telemetry.addData("encoder_Y position ", 0);
+        _color_red = telemetry.addData("Red",valueOf(0.0));
+        _color_blue = telemetry.addData("Blue",valueOf(0.0));
+        _color_green = telemetry.addData("Green",valueOf(0.0));
         telemetry.update();
     }
 
     @Override
     public void loop() {
         robotMecaDrive(!FIELD_CENTRIC, robotDrive, gamepad);
+        updateOdometry();
         updateTelemetry();
 
     }
@@ -109,6 +117,9 @@ public class BasicTeleOps extends OpMode {
         encoderXPos.setValue(String.format("%.2f", robotX));
         encoderYPos.setValue(String.format("%.2f", robotY));
         encoderHeadings.setValue(String.format("%.2f", robotHeading));
+        _color_red.setValue(String.format("%.2f", _colorSensor.getColor()[0]));
+        _color_blue.setValue(String.format("%.2f",_colorSensor.getColor()[2]));
+        _color_green.setValue(String.format("%.2f",_colorSensor.getColor()[1]));
 
         telemetry.update();
     }
