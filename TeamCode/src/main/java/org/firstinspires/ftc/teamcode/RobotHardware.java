@@ -2,7 +2,9 @@ package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU;
 
 public class RobotHardware {
     public MotorEx frontLeftMotor;
@@ -13,11 +15,9 @@ public class RobotHardware {
     public MotorEx rightodometry;
     public MotorEx centerodometry;
 
-    public MotorEx horizontalMotor;
-    public MotorEx verticalMotorLeft;
-    public MotorEx verticalMotorRight;
-
     public HardwareMap hardwareMap;
+
+    public IMU imu;
 
 
     public void init(HardwareMap hardwareMap) {
@@ -29,11 +29,6 @@ public class RobotHardware {
         frontRightMotor = new MotorEx(hardwareMap, "FR_Motor", Motor.GoBILDA.RPM_435);
         backRightMotor = new MotorEx(hardwareMap, "BR_Motor", Motor.GoBILDA.RPM_435);
 
-        // set slides motors
-        horizontalMotor = new MotorEx(hardwareMap, "hslide_Motor", Motor.GoBILDA.RPM_312);
-        verticalMotorLeft = new MotorEx(hardwareMap, "vslideL_Motor", Motor.GoBILDA.RPM_312);
-        verticalMotorRight = new MotorEx(hardwareMap, "vslideR_Motor", Motor.GoBILDA.RPM_312);
-
         // set odometry
         leftodometry = new MotorEx(hardwareMap, "FL_Motor");// set odometry
         rightodometry = new  MotorEx(hardwareMap,"BL_Motor");// set odometry
@@ -44,13 +39,12 @@ public class RobotHardware {
         centerodometry.resetEncoder();
 
         //set motor mode and motor direction
-        frontLeftMotor.setInverted(true);  // Reverse the left motor if needed
-        backLeftMotor.setInverted(true);  // Reverse the left motor if needed
+        frontLeftMotor.setInverted(false);  // Reverse the left motor if needed
+        backLeftMotor.setInverted(false);  // Reverse the left motor if needed
         frontLeftMotor.setRunMode(Motor.RunMode.RawPower); // set motor mode
         backLeftMotor.setRunMode(Motor.RunMode.RawPower); //set motor mode
         frontRightMotor.setRunMode(Motor.RunMode.RawPower); // set motor mode
         backRightMotor.setRunMode((Motor.RunMode.RawPower)); // set motor mode
-        verticalMotorRight.setInverted(true); // Revers the vslide motor
 
         // set robot motor power 0
         frontLeftMotor.set(0);
@@ -60,6 +54,24 @@ public class RobotHardware {
         // reset encoders when stop
         resetDriveEncoders();
 
+    }
+
+    // Initialize IMU
+    public void initIMU() {
+        // get imu from hardwareMap
+        //imu = hardwareMap.get(BNO055IMU.class, "Adafruit_IMU");
+        // Initialize IMU parameter setup
+        //BNO055IMU.Parameters imuParameters = new BNO055IMU.Parameters();
+        //imuParameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        //imuParameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        // initialize IMU
+        //imu.initialize(imuParameters);
+
+        // set up REVimu
+        imu = hardwareMap.get(IMU.class, "imu");
+        imu.initialize(
+                new IMU.Parameters(new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP, RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD))
+        );
     }
 
     // reset odometry encoder

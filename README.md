@@ -1,6 +1,8 @@
 ## Team 24135 Notes
 ### This is the 24135 branch based on the FTC SDK for the INTO THE DEEP (2024-2025) competition season.
-### This branch used FTC lib MotorEX and GamePad.
+### This branch is developped for testbot.
+### Used FTC lib MotorEX and GamePad.
+### Used FTC lib Mecanumdrive class.
 ### Created General Hardware Mapping Class.
 Hardware mapping including:
 
@@ -9,8 +11,8 @@ Hardware mapping including:
  IMU is Rev control hub IMU 
  
  IMU initialization - is using IMU generic interface
-### Created BasicTeleops using FTClib Mecanum wheel drive class
 
+Added Odometry values on the drivestation.
 
 ## NOTICE
 
