@@ -56,8 +56,8 @@ public class BasicTeleOps extends OpMode {
         // telemetry
         telemetry.addData("Status", "Initialized");
         status = telemetry.addData("Status","running");
-        headings = telemetry.addData("IMU Angle", format("%.2f", robot.imu.getRobotYawPitchRollAngles()));
-        encoderHeadings = telemetry.addData("encoder_Headings ", format("%.2f", robotHeading));
+        headings = telemetry.addData("IMU Angle", String.format("%.2f", robot.imu.getRobotYawPitchRollAngles()));
+        encoderHeadings = telemetry.addData("encoder_Headings ", new String("%.2f", robotHeading));
         encoderXPos = telemetry.addData("encoder_X position ", 0);
         encoderYPos = telemetry.addData("encoder_Y position ", 0);
         telemetry.update();
