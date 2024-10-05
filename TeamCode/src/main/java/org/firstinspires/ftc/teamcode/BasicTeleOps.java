@@ -20,6 +20,7 @@ public class BasicTeleOps extends OpMode {
     public RobotHardware robot;
     public GamepadEx gamepad;
     public MecanumDrive robotDrive;
+    public ColSensorTest _colorSensor;
     private final boolean FIELD_CENTRIC = false;
 
     //declare position and heading tracking variables
@@ -48,8 +49,12 @@ public class BasicTeleOps extends OpMode {
         robot.initIMU();
         robotDrive = new MecanumDrive(robot.frontLeftMotor, robot.frontRightMotor, robot.backLeftMotor, robot.backRightMotor);
         gamepad = new GamepadEx(gamepad2);
-        telemetry.addData("Status", "Initialized");
+        _colorSensor = new ColSensorTest(hardwareMap,telemetry);
+        _colorSensor.colSensor_ini();
 
+
+        // telemetry
+        telemetry.addData("Status", "Initialized");
         status = telemetry.addData("Status","running");
         headings = telemetry.addData("IMU Angle", format("%.2f", robot.imu.getRobotYawPitchRollAngles()));
         encoderHeadings = telemetry.addData("encoder_Headings ", format("%.2f", robotHeading));
