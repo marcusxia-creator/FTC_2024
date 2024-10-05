@@ -60,7 +60,7 @@ public class BasicTeleOps extends OpMode {
         // telemetry
         telemetry.addData("Status", "Initialized");
         status = telemetry.addData("Status","running");
-        headings = telemetry.addData("IMU Angle", String.format("%.2f", robot.imu.getRobotYawPitchRollAngles()));
+        headings = telemetry.addData("IMU Angle", String.format("%.2f", robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)));
         encoderHeadings = telemetry.addData("encoder_Headings ", String.format("%.2f", robotHeading));
         encoderXPos = telemetry.addData("encoder_X position ", 0);
         encoderYPos = telemetry.addData("encoder_Y position ", 0);
@@ -113,10 +113,13 @@ public class BasicTeleOps extends OpMode {
     }
 
     private void updateTelemetry(){
-        headings = telemetry.addData("IMU Angle", format("%.2f", robot.imu.getRobotYawPitchRollAngles()));
+        //Update IMU Angle Correctly using yaw()
+        headings.setValue("IMU Angle", format("%.2f", robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)));
         encoderXPos.setValue(String.format("%.2f", robotX));
         encoderYPos.setValue(String.format("%.2f", robotY));
         encoderHeadings.setValue(String.format("%.2f", robotHeading));
+
+        //Update color sensor values correctly
         _color_red.setValue(String.format("%.2f", _colorSensor.getColor()[0]));
         _color_blue.setValue(String.format("%.2f",_colorSensor.getColor()[2]));
         _color_green.setValue(String.format("%.2f",_colorSensor.getColor()[1]));
