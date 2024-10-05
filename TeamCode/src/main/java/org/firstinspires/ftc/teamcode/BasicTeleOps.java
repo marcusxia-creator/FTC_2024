@@ -49,7 +49,7 @@ public class BasicTeleOps extends OpMode {
         robot.initIMU();
         robotDrive = new MecanumDrive(robot.frontLeftMotor, robot.frontRightMotor, robot.backLeftMotor, robot.backRightMotor);
         gamepad = new GamepadEx(gamepad2);
-        _colorSensor = new ColSensorTest(hardwareMap,telemetry);
+        _colorSensor = new ColSensorTest(hardwareMap);
         _colorSensor.colSensor_ini();
 
 

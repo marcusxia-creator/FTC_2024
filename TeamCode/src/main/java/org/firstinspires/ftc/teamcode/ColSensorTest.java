@@ -23,10 +23,5 @@ public class ColSensorTest {
     public double redColor(){
         return _colorSensor.red();
     }
-/*
-    public void update_telemetry(){
-        redValue1 = telemetry.addData("RedValue", redValue);
-        update_telemetry();
-    }
- */
+
 }
