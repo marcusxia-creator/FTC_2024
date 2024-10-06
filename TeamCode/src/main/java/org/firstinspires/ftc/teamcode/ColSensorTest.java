@@ -9,25 +9,20 @@ import java.util.ArrayList;
 color_sensor I2C port 01
  */
 public class ColSensorTest {
-    private final HardwareMap hardwareMap;
-    private ColorSensor _colorSensor;
+    private final RobotHardware robot;
     private double greenValue;
     private double redValue;
     private double blueValue;
 
 
-    public ColSensorTest(HardwareMap hardwareMap){
-        this.hardwareMap = hardwareMap;
-    }
-
-    public void colSensor_ini(){
-        _colorSensor = hardwareMap.get(ColorSensor.class,"color_sensor");
+    public ColSensorTest(RobotHardware robot){
+        this.robot = robot;
     }
 
     public double[] getColor(){
-        redValue   =  _colorSensor.red();
-        greenValue = _colorSensor.green();
-        blueValue  =  _colorSensor.blue();
+        redValue   =  robot.ColorSensor.red();
+        greenValue =  robot.ColorSensor.green();
+        blueValue  =  robot.ColorSensor.blue();
         //items.add((double) _colorSensor.alpha());
         return new double[]{redValue, greenValue, blueValue};
     }

@@ -15,14 +15,14 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 
-@TeleOp (name="BasicTeleOps_Testbot", group = "linear OpMode")
+@TeleOp (name="BasicTeleOps_Testbot", group = "OpMode")
 public class BasicTeleOps extends OpMode {
 
     public RobotHardware robot;
-    public GamepadEx gamepad;
-    public MecanumDrive robotDrive;
-    public ColSensorTest _colorSensor;
-    private final boolean FIELD_CENTRIC = false;
+    public GamepadEx gamepadControl2;
+    public RobotMecaDrive robotDrive;
+    public ColSensorTest ColorSensor; // declare color sensor
+    public VslideControl vslideControl;
 
     //declare position and heading tracking variables
     private double robotX = 0.0;
@@ -48,19 +48,25 @@ public class BasicTeleOps extends OpMode {
 
     @Override
     public void init() {
-        robot = new RobotHardware();
-        robot.init(hardwareMap);
-        robot.initIMU();
-        robotDrive = new MecanumDrive(robot.frontLeftMotor, robot.frontRightMotor, robot.backLeftMotor, robot.backRightMotor);
-        gamepad = new GamepadEx(gamepad2);
-        _colorSensor = new ColSensorTest(hardwareMap);
-        _colorSensor.colSensor_ini();
+        // Initialize robot and robot imu
+        robot = new RobotHardware(); // config robot
+        robot.init(hardwareMap); // read in hardwareMap into robot for config hardwares
+        robot.initIMU(); // initialize control hub IMU
 
+        // initial control gamepad
+        gamepadControl2 = new GamepadEx(gamepad2);
+
+        // initial Mecanmum drive
+        robotDrive = new RobotMecaDrive(robot, gamepadControl2);
+        robotDrive.MecanDriveInitial();
+
+        //initial Vertical Slides
+        vslideControl = new VslideControl(robot, gamepadControl2);
+        vslideControl.VslideInitial();
 
         // telemetry
-        telemetry.addData("Status", "Initialized");
-        status = telemetry.addData("Status","running");
-        headings = telemetry.addData("IMU Angle", String.format("%.2f", robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)));
+        status  = telemetry.addData("Status", "Initialized");
+        headings = telemetry.addData("IMU Angle", robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
         encoderHeadings = telemetry.addData("encoder_Headings ", String.format("%.2f", robotHeading));
         encoderXPos = telemetry.addData("encoder_X position ", 0);
         encoderYPos = telemetry.addData("encoder_Y position ", 0);
@@ -72,34 +78,11 @@ public class BasicTeleOps extends OpMode {
 
     @Override
     public void loop() {
-        robotMecaDrive(!FIELD_CENTRIC, robotDrive, gamepad);
-        updateOdometry();
-        updateTelemetry();
+        robotDrive.MecanDriveLoop();
+        vslideControl.VslideRun();
+        updateOdometry(); // update odometry
+        updateTelemetry();// show color sensor signal as well
 
-    }
-
-    private void robotMecaDrive(boolean FIELD_CENTRIC, MecanumDrive robotDrive, GamepadEx gamepad) {
-        final double powerFactor = 0.7;
-        double  strafePower =  gamepad.getRightX();
-        double  drivePower =   gamepad.getRightY();
-        double  rotatePower =  gamepad.getLeftX();
-
-        if (!FIELD_CENTRIC) {
-            robotDrive.driveRobotCentric(
-                    Range.clip(strafePower*powerFactor, -1.0, 1.0),
-                    Range.clip(drivePower*powerFactor  , -1.0, 1.0),
-                    Range.clip(rotatePower*powerFactor, -1.0, 1.0),
-                    false
-            );
-        } else {
-            robotDrive.driveFieldCentric(
-                    Range.clip(strafePower*powerFactor, -1.0, 1.0),
-                    Range.clip(drivePower*powerFactor, -1.0, 1.0),
-                    Range.clip(rotatePower*powerFactor, -1.0, 1.0),
-                    robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES),
-                    false
-            );
-        }
     }
 
     public void stop() {
@@ -108,21 +91,24 @@ public class BasicTeleOps extends OpMode {
         robot.frontRightMotor.set(0);
         robot.backLeftMotor.set(0);
         robot.backRightMotor.set(0);
+        robot.verticalSlideMotor1.set(0);
+        robot.intakeServo.setPosition(0.2);
         telemetry.addData("Status", "Robot stopped");
         telemetry.update();
     }
 
     private void updateTelemetry(){
+        status.setValue("Status","running");
         //Update IMU Angle Correctly using yaw()
-        headings.setValue("IMU Angle", format("%.2f", robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)));
+        headings.setValue("IMU Angle",  robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
         encoderXPos.setValue(String.format("%.2f", robotX));
         encoderYPos.setValue(String.format("%.2f", robotY));
         encoderHeadings.setValue(String.format("%.2f", robotHeading));
 
         //Update color sensor values correctly
-        _color_red.setValue(String.format("%.2f", _colorSensor.getColor()[0]));
-        _color_blue.setValue(String.format("%.2f",_colorSensor.getColor()[2]));
-        _color_green.setValue(String.format("%.2f",_colorSensor.getColor()[1]));
+        _color_red.setValue(String.format("%.2f", ColorSensor.getColor()[0]));
+        _color_blue.setValue(String.format("%.2f",ColorSensor.getColor()[2]));
+        _color_green.setValue(String.format("%.2f",ColorSensor.getColor()[1]));
 
         telemetry.update();
     }
