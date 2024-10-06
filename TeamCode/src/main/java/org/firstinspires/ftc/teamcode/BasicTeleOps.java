@@ -64,6 +64,9 @@ public class BasicTeleOps extends OpMode {
         vslideControl = new VslideControl(robot, gamepadControl2, telemetry);
         vslideControl.VslideInitial();
 
+        //initiate colorsensor
+        ColorSensor = new ColSensorTest(robot, telemetry);
+
         // telemetry
         status  = telemetry.addData("Status", "Initialized");
         headings = telemetry.addData("IMU Angle", "%.2f", robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));

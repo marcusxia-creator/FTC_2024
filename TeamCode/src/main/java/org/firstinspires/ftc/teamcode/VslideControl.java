@@ -68,7 +68,7 @@ public class VslideControl {
         robot.verticalSlideMotor1.set(0.1);
 
         //initial intakeServo
-        robot.intakeServo.setPosition(0);
+        robot.intakeServo.turnToAngle(90);
 
         //telemetry
         telemetry.addData("Robot Status", "Initialized");
