@@ -21,7 +21,7 @@ public class DepositeTest extends LinearOpMode {
      */
     public DcMotorEx fDepositeMotor;
 
-    public Gamepad gamepad1;
+
     @Override
     public void runOpMode() {
         fDepositeMotor = hardwareMap.get(DcMotorEx.class, "VS_Motor_1");
