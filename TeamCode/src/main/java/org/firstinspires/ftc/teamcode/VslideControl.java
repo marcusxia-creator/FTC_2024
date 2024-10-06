@@ -25,7 +25,7 @@ public class VslideControl {
     private final double grabTime = 3;
 
     // config slide position and intake position
-    int slideUp = -1450;
+    int slideUp = -300;
 
     // Position of the arm when it's down
     int slideDown = 20;
@@ -56,9 +56,14 @@ public class VslideControl {
     public void VslideInitial(){
         //reset lift timer
         liftTimer.reset();
+        // reset the encoder
+        robot.verticalSlideMotor1.resetEncoder();
+
+// the current position of the motor
+        int pos = robot.verticalSlideMotor1.getCurrentPosition();
 
         // Sets the starting position of the arm to the down position
-        robot.verticalSlideMotor1.setTargetPosition(slideDown);
+        robot.verticalSlideMotor1.setTargetPosition(pos);
         robot.verticalSlideMotor1.setRunMode(Motor.RunMode.PositionControl);
         robot.verticalSlideMotor1.set(0.1);
 

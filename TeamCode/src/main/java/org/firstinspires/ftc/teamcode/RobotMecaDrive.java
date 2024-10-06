@@ -33,7 +33,7 @@ public class RobotMecaDrive {
     }
 
     public void MecanDriveInitial(){
-        MecanumDrive drive = new MecanumDrive(robot.frontLeftMotor, robot.frontRightMotor, robot.backLeftMotor, robot.backRightMotor);
+        drive = new MecanumDrive(robot.frontLeftMotor, robot.frontRightMotor, robot.backLeftMotor, robot.backRightMotor);
     }
 
     public void MecanDriveLoop() {
