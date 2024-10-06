@@ -109,9 +109,9 @@ public class BasicTeleOps extends OpMode {
         encoderHeadings.setValue(String.format("%.2f", robotHeading));
 
         //Update color sensor values correctly
-        _color_red.setValue(String.format("%.2f", ColorSensor.getColor()[0]));
-        _color_blue.setValue(String.format("%.2f",ColorSensor.getColor()[2]));
-        _color_green.setValue(String.format("%.2f",ColorSensor.getColor()[1]));
+        _color_red.setValue(ColorSensor.getColor()[0]);
+        _color_blue.setValue(ColorSensor.getColor()[2]);
+        _color_green.setValue(ColorSensor.getColor()[1]);
 
         telemetry.update();
     }
