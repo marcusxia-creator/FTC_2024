@@ -37,16 +37,20 @@ public class DepositeTest extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            if (gamepad1.x) {
-                fDepositeMotor.setTargetPosition(DE_rotation_ticks);
-                fDepositeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                fDepositeMotor.setPower(0.1);
-                //DepositeMotorExtend = true;
-            } else if (gamepad1.y) {
-                fDepositeMotor.setTargetPosition(-DE_rotation_ticks);
-                fDepositeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                fDepositeMotor.setPower(0.1);
-                //DepositeMotorExtend = false;
+            if (gamepad1.x && !DepositeMotorExtend) {
+                if (!AtPosition(DE_rotation_ticks)){
+                    fDepositeMotor.setTargetPosition(DE_rotation_ticks);
+                    fDepositeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    fDepositeMotor.setPower(0.1);
+                    DepositeMotorExtend = true;
+                }
+            } else if (gamepad1.y && DepositeMotorExtend) {
+                if (!AtPosition(DE_rotation_ticks)) {
+                    fDepositeMotor.setTargetPosition(-DE_rotation_ticks);
+                    fDepositeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    fDepositeMotor.setPower(0.1);
+                    DepositeMotorExtend = false;
+                }
             }
 
             telemetry.addData("Deposite Slides Extended:", DepositeMotorExtend);
@@ -54,5 +58,9 @@ public class DepositeTest extends LinearOpMode {
             telemetry.addData("Deposite Motor Position:", fDepositeMotor.getCurrentPosition());
             telemetry.update();
         }
+    }
+
+    private boolean AtPosition(int targetPosition) {
+        return (Math.abs(targetPosition) - Math.abs(fDepositeMotor.getCurrentPosition()) < 5);
     }
 }
