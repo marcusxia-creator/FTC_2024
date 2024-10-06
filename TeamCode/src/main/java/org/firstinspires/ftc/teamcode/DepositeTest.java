@@ -37,16 +37,16 @@ public class DepositeTest extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            if (gamepad1.x && !DepositeMotorExtend) {
+            if (gamepad1.x) {
                 fDepositeMotor.setTargetPosition(DE_rotation_ticks);
                 fDepositeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 fDepositeMotor.setPower(0.1);
-                DepositeMotorExtend = true;
-            } else if (gamepad1.y && DepositeMotorExtend) {
+                //DepositeMotorExtend = true;
+            } else if (gamepad1.y) {
                 fDepositeMotor.setTargetPosition(-DE_rotation_ticks);
                 fDepositeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 fDepositeMotor.setPower(0.1);
-                DepositeMotorExtend = false;
+                //DepositeMotorExtend = false;
             }
 
             telemetry.addData("Deposite Slides Extended:", DepositeMotorExtend);
