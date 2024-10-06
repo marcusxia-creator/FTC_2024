@@ -30,8 +30,8 @@ public class VslideControl {
     // Position of the arm when it's down
     int slideDown = 20;
     // position of servo
-    double intakeOut = 0;
-    double intakeIn = 90;
+    double intakeOut = 90;
+    double intakeIn = 120;
     double grabPosition = 0.5;
     // Motor CPR
     int CPR = 537;
@@ -68,7 +68,7 @@ public class VslideControl {
         robot.verticalSlideMotor1.set(0.1);
 
         //initial intakeServo
-        robot.intakeServo.turnToAngle(90);
+        robot.intakeServo.turnToAngle(180);
 
         //telemetry
         telemetry.addData("Robot Status", "Initialized");

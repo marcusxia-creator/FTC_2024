@@ -50,7 +50,7 @@ public class RobotHardware {
         verticalSlideMotor1 = new MotorEx(hardwareMap,"VS_Motor_1", Motor.GoBILDA.RPM_312);
 
         //set intake servo
-        intakeServo = new SimpleServo(hardwareMap, "Intake_Servo",-150,150, AngleUnit.DEGREES);
+        intakeServo = new SimpleServo(hardwareMap, "Intake_Servo",0,300, AngleUnit.DEGREES);
 
         // reset encoder
         leftodometry.resetEncoder();
