@@ -29,9 +29,9 @@ public class DepositeTest extends LinearOpMode {
         fDepositeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         fDepositeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        int ticks = 537;
+        int CPR = 537;
         int DE_res = 2;
-        int DE_rotation = (DE_res * ticks);
+        int DE_rotation_ticks = (DE_res * CPR);
 
         boolean DepositeMotorExtend = false;
 
@@ -39,17 +39,17 @@ public class DepositeTest extends LinearOpMode {
 
         while (opModeIsActive()) {
             if (gamepad1.x && !DepositeMotorExtend) {
-                fDepositeMotor.setTargetPosition(DE_rotation);
+                fDepositeMotor.setTargetPosition(DE_rotation_ticks);
                 fDepositeMotor.setPower(0.1);
                 DepositeMotorExtend = true;
             } else if (gamepad1.y && DepositeMotorExtend) {
-                fDepositeMotor.setTargetPosition(-DE_rotation);
+                fDepositeMotor.setTargetPosition(-DE_rotation_ticks);
                 fDepositeMotor.setPower(0.1);
                 DepositeMotorExtend = false;
             }
 
             telemetry.addData("Deposite Slides Extended:", DepositeMotorExtend);
-            telemetry.addData("Deposite Extending rotation:", DE_rotation);
+            telemetry.addData("Deposite Extending rotation:", DE_rotation_ticks);
             telemetry.addData("Deposite Motor Position:", fDepositeMotor.getCurrentPosition());
             telemetry.update();
         }
