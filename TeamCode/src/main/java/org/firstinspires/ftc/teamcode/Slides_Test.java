@@ -8,6 +8,17 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 @TeleOp (name= "Slides_Test_Zirui", group = "LinearOpMode")
 public class Slides_Test extends LinearOpMode {
+    /*
+    configuration for the test bot
+    Motors for chassis
+    FL_Motor; BL_motor; FR_Motor; BR_Motor;
+    Odometry for chassis
+    FL_Motor; BL_motor; FR_Motor;
+    Servo for Intake
+    Intake_Servo
+    Motor for vertical slide
+    VS_Motor_1
+    */
     public DcMotor frontLeftMotor;
     public DcMotor frontRightMotor;
     public DcMotor backLeftMotor;
@@ -29,14 +40,14 @@ public class Slides_Test extends LinearOpMode {
 
         IntakeMotor = hardwareMap.get(DcMotor.class, "1IN_Motor");
 
-        fDepositeMotor = hardwareMap.get(DcMotor.class, "1DE_Motor");
+        fDepositeMotor = hardwareMap.get(DcMotor.class, "VS_Motor_1");
         sDepositeMotor = hardwareMap.get(DcMotor.class, "2DE_Motor");
 
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        IntakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         IntakeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        IntakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         fDepositeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         fDepositeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -52,6 +63,8 @@ public class Slides_Test extends LinearOpMode {
         boolean IntakeMotorExtend = false;
         boolean DepositeMotorExtend = false;
 
+        double motorMaxSpeed = 0.4;
+
         waitForStart();
 
         while (opModeIsActive()) {
@@ -61,10 +74,10 @@ public class Slides_Test extends LinearOpMode {
 
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
 
-            double frontLeftMotorPower = (y + x + rx) / denominator;
-            double frontRightMotorPower = (y - x - rx) / denominator;
-            double backLeftMotorPower = (y - x + rx) / denominator;
-            double backRightMotorPower = (y + x - rx) / denominator;
+            double frontLeftMotorPower = (y + x + rx * motorMaxSpeed) / denominator;
+            double frontRightMotorPower = (y - x - rx * motorMaxSpeed) / denominator;
+            double backLeftMotorPower = (y - x + rx * motorMaxSpeed) / denominator;
+            double backRightMotorPower = (y + x - rx * motorMaxSpeed) / denominator;
 
             frontLeftMotor.setPower(frontLeftMotorPower);
             frontRightMotor.setPower(frontRightMotorPower);

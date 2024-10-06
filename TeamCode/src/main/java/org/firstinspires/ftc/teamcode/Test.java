@@ -8,6 +8,17 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 @TeleOp(name= "Test_Zirui", group = "OpMode")
 public class Test extends LinearOpMode {
+    /*
+    configuration for the test bot
+    Motors for chassis
+    FL_Motor; BL_motor; FR_Motor; BR_Motor;
+    Odometry for chassis
+    FL_Motor; BL_motor; FR_Motor;
+    Servo for Intake
+    Intake_Servo
+    Motor for vertical slide
+    VS_Motor_1
+    */
     public DcMotor frontLeftMotor;
     public DcMotor frontRightMotor;
     public DcMotor backLeftMotor;
@@ -25,6 +36,8 @@ public class Test extends LinearOpMode {
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        double motorMaxSpeed = 0.4;
+
         telemetry.addLine("Robot Initialized");
         telemetry.update();
 
@@ -37,10 +50,10 @@ public class Test extends LinearOpMode {
 
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
 
-            double frontLeftMotorPower = (y + x + rx * 0.4) / denominator;
-            double frontRightMotorPower = (y - x - rx * 0.4) / denominator;
-            double backLeftMotorPower = (y - x + rx * 0.4)/ denominator;
-            double backRightMotorPower = (y + x - rx * 0.4) / denominator;
+            double frontLeftMotorPower = (y + x + rx * motorMaxSpeed) / denominator;
+            double frontRightMotorPower = (y - x - rx * motorMaxSpeed) / denominator;
+            double backLeftMotorPower = (y - x + rx * motorMaxSpeed)/ denominator;
+            double backRightMotorPower = (y + x - rx * motorMaxSpeed) / denominator;
 
             frontLeftMotor.setPower(frontLeftMotorPower);
             frontRightMotor.setPower(frontRightMotorPower);
