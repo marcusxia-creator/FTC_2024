@@ -66,8 +66,8 @@ public class BasicTeleOps extends OpMode {
 
         // telemetry
         status  = telemetry.addData("Status", "Initialized");
-        headings = telemetry.addData("IMU Angle", robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
-        encoderHeadings = telemetry.addData("encoder_Headings ", String.format("%.2f", robotHeading));
+        headings = telemetry.addData("IMU Angle", "%.2f", robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
+        encoderHeadings = telemetry.addData("encoder_Headings ", "%.2f", robotHeading);
         encoderXPos = telemetry.addData("encoder_X position ", 0);
         encoderYPos = telemetry.addData("encoder_Y position ", 0);
         _color_red = telemetry.addData("Red",valueOf(0.0));
@@ -100,7 +100,7 @@ public class BasicTeleOps extends OpMode {
     private void updateTelemetry(){
         status.setValue("Status","running");
         //Update IMU Angle Correctly using yaw()
-        headings.setValue("IMU Angle",  robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
+        headings.setValue(String.format("%.2f", robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)));
         encoderXPos.setValue(String.format("%.2f", robotX));
         encoderYPos.setValue(String.format("%.2f", robotY));
         encoderHeadings.setValue(String.format("%.2f", robotHeading));
