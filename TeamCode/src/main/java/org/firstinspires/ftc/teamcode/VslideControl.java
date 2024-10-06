@@ -1,12 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class VslideControl {
     /*
@@ -16,6 +14,7 @@ public class VslideControl {
      */
     private final RobotHardware robot;
     private final GamepadEx gamepad;
+    private final Telemetry telemetry;
     private ElapsedTime debouncerTimer = new ElapsedTime();
     private ElapsedTime liftTimer = new ElapsedTime(); // Timer for controlling intake running time
 
@@ -48,9 +47,10 @@ public class VslideControl {
     //default slidestate status
     private SLIDESTATE SlideState = SLIDESTATE.SLIDE_START; // Persist state
 
-    public VslideControl(RobotHardware robot, GamepadEx gamepad) {
+    public VslideControl(RobotHardware robot, GamepadEx gamepad, Telemetry telemetry) {
         this.robot = robot;
         this.gamepad = gamepad;
+        this.telemetry = telemetry;
     }
 
     public void VslideInitial(){
@@ -120,26 +120,24 @@ public class VslideControl {
         double desiredPosition = robot.verticalSlideMotor1.getDistance();
 
         // Show the position of the armMotor on telemetry
-        double resolution = position/537.7;
+        double resolution = position/CPR;
         double angle = resolution/360;
         double angle_normalized = resolution%360;
 
-        telemetry.addData("Encoder Position", position);
+        telemetry.addData("Encoder Position","%.2f", position);
 
         // Show the target position of the armMotor on telemetry
-        telemetry.addData("Desired Position", desiredPosition);
+        telemetry.addData("Desired Position", "%.2f",desiredPosition);
 
-        telemetry.addData("Desired Position", desiredPosition);
+        telemetry.addData("resolution Position", "%.2f", resolution);
 
-        telemetry.addData("resolution Position", resolution);
+        telemetry.addData("Servo Position", "%.2f",robot.intakeServo.getPosition());
 
-        telemetry.addData("Servo Position", robot.intakeServo.getPosition());
+        telemetry.addData("r_angle", "%.2f", angle);
 
-        telemetry.addData("r_angle", angle);
+        telemetry.addData("n_angle", "%.2f", angle_normalized);
 
-        telemetry.addData("n_angle", angle_normalized);
-
-        telemetry.addData("Time", liftTimer.seconds());
+        telemetry.addData("Time", "%.2f",liftTimer.seconds());
 
         telemetry.update();
     }

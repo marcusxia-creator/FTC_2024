@@ -61,7 +61,7 @@ public class BasicTeleOps extends OpMode {
         robotDrive.MecanDriveInitial();
 
         //initial Vertical Slides
-        vslideControl = new VslideControl(robot, gamepadControl2);
+        vslideControl = new VslideControl(robot, gamepadControl2, telemetry);
         vslideControl.VslideInitial();
 
         // telemetry
