@@ -117,7 +117,7 @@ public class VslideControl {
         double position = robot.verticalSlideMotor1.getCurrentPosition();
 
         // Get the target position of the armMotor
-        double desiredPosition = robot.verticalSlideMotor1.get();
+        double desiredPosition = robot.verticalSlideMotor1.getDistance();
 
         // Show the position of the armMotor on telemetry
         double resolution = position/537.7;
