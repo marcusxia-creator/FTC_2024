@@ -98,7 +98,7 @@ public class SlideTest extends LinearOpMode {
             // Show the target position of the armMotor on telemetry
             telemetry.addData("Desired Position", desiredPosition);
 
-            telemetry.addData("Desired Position", desiredPosition);
+            telemetry.addData("target Position", position);
 
             telemetry.addData("resolution Position", resolution);
 
