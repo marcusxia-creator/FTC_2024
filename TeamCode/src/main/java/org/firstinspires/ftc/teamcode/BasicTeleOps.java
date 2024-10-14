@@ -21,9 +21,10 @@ public class BasicTeleOps extends OpMode {
     public RobotHardware robot;
     public GamepadEx gamepadControl2;
     public RobotMecaDrive robotDrive;
-    public ColSensorTest ColorSensor; // declare color sensor
+    //public ColSensorTest ColorSensor; // declare color sensor
     public VslideControl vslideControl;
 
+    /*
     //declare position and heading tracking variables
     private double robotX = 0.0;
     private double robotY = 0.0;
@@ -31,6 +32,7 @@ public class BasicTeleOps extends OpMode {
     private int previousLeftEncoder = 0;
     private int previousRightEncoder = 0;
     private int previousCenterEncoder = 0;
+    */
 
     private static final double TICKS_PER_INCH = 1/0.07593;
     private static final double TRACK_WIDTH = 1/0.0001759;
@@ -70,12 +72,14 @@ public class BasicTeleOps extends OpMode {
         // telemetry
         status  = telemetry.addData("Status", "Initialized");
         headings = telemetry.addData("IMU Angle", "%.2f", robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
+        /*
         encoderHeadings = telemetry.addData("encoder_Headings ", "%.2f", robotHeading);
         encoderXPos = telemetry.addData("encoder_X position ", 0);
         encoderYPos = telemetry.addData("encoder_Y position ", 0);
         _color_red = telemetry.addData("Red",valueOf(0.0));
         _color_blue = telemetry.addData("Blue",valueOf(0.0));
         _color_green = telemetry.addData("Green",valueOf(0.0));
+        */
         telemetry.update();
     }
 
@@ -83,7 +87,6 @@ public class BasicTeleOps extends OpMode {
     public void loop() {
         robotDrive.MecanDriveLoop();
         vslideControl.VslideRun();
-
         updateTelemetry();// show color sensor signal as well
 
     }
