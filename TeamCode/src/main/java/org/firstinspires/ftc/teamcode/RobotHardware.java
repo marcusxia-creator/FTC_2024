@@ -38,7 +38,7 @@ public class RobotHardware {
 
     //public ServoEx intakeServo;
 
-    //public SensorColor ColorSensor;
+    public SensorColor ColorSensor;
 
     public HardwareMap hardwareMap;
 
