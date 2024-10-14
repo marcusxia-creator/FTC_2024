@@ -84,6 +84,7 @@ public class SlideTest extends LinearOpMode {
             if (gamepad1.x && debounceTimer.seconds() > DEBOUNCE_TIME) {
                 armNewPosition =armMotorLeft.getCurrentPosition() + 20;
                 armMotorLeft.setTargetPosition(armNewPosition);
+                armMotorRight.setTargetPosition(armNewPosition);
                 armMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 armMotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 armMotorLeft.setPower(0.5);
