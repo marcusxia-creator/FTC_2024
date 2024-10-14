@@ -46,6 +46,11 @@ public class BasicTeleOps extends OpMode {
     private Telemetry.Item _color_red;
     private Telemetry.Item _color_blue;
     private Telemetry.Item _color_green;
+    //Telemetry item
+    private Telemetry.Item leftFrontMotorPower;
+    private Telemetry.Item rightFrontMotorPower;
+    private Telemetry.Item leftBackMotorPower;
+    private Telemetry.Item rightBackMotorPower;
 
 
     @Override
@@ -72,6 +77,10 @@ public class BasicTeleOps extends OpMode {
         // telemetry
         status  = telemetry.addData("Status", "Initialized");
         headings = telemetry.addData("IMU Angle", "%.2f", robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
+        leftFrontMotorPower = telemetry.addData("leftFrontMotorPower ", 0.0);
+        rightFrontMotorPower = telemetry.addData("rightFrontMotorPower ", 0.0);
+        leftBackMotorPower = telemetry.addData("lefBackMotorPower ", 0.0);
+        rightBackMotorPower = telemetry.addData("rightBackMotorPower ", 0.0);
         /*
         encoderHeadings = telemetry.addData("encoder_Headings ", "%.2f", robotHeading);
         encoderXPos = telemetry.addData("encoder_X position ", 0);
@@ -118,6 +127,10 @@ public class BasicTeleOps extends OpMode {
         _color_blue.setValue(ColorSensor.getColor()[2]);
         _color_green.setValue(ColorSensor.getColor()[1]);
         */
+        leftFrontMotorPower.setValue(String.format("%.2f", robot.frontLeftMotor.getVelocity()));
+        rightFrontMotorPower.setValue(String.format("%.2f", robot.frontRightMotor.getVelocity()));
+        leftBackMotorPower.setValue(String.format("%.2f", robot.backLeftMotor.getVelocity()));
+        rightBackMotorPower.setValue(String.format("%.2f", robot.backRightMotor.getVelocity()));
         telemetry.update();
     }
 
