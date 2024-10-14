@@ -25,10 +25,12 @@ public class VslideControl {
     private final double grabTime = 3;
 
     // config slide position and intake position
-    int slideUp = -300;
+    int slideUp = 1000;
+    int slideMid = 2000;
+
 
     // Position of the arm when it's down
-    int slideDown = 20;
+    int slideDown = 10;
     // position of servo
     double intakeOut = 90;
     double intakeIn = 120;
@@ -39,8 +41,9 @@ public class VslideControl {
     //declare slide state
     public enum SLIDESTATE {
         SLIDE_START,
-        SLIDE_EXTEND,
-        INTAKE_OUT,
+        SLIDE_MID,
+        INTAKE_HIGH,
+        SLID_HIGH,
         SLIDE_RETRACT
     }
 
@@ -57,23 +60,28 @@ public class VslideControl {
         //reset lift timer
         liftTimer.reset();
         // reset the encoder
-        robot.verticalSlideMotor1.resetEncoder();
+        robot.verticalSlideMotorLeft.resetEncoder();
+        robot.verticalSlideMotorRight.resetEncoder();
 
 // the current position of the motor
-        int pos = robot.verticalSlideMotor1.getCurrentPosition();
+        int pos = robot.verticalSlideMotorLeft.getCurrentPosition();
 
         // Sets the starting position of the arm to the down position
-        robot.verticalSlideMotor1.setTargetPosition(pos);
-        robot.verticalSlideMotor1.setRunMode(Motor.RunMode.PositionControl);
-        robot.verticalSlideMotor1.set(0.1);
+        robot.verticalSlideMotorLeft.setTargetPosition(pos);
+        robot.verticalSlideMotorRight.setTargetPosition(pos);
+        robot.verticalSlideMotorLeft.setRunMode(Motor.RunMode.PositionControl);
+        robot.verticalSlideMotorRight.setRunMode(Motor.RunMode.PositionControl);
+        robot.verticalSlideMotorLeft.set(0.1);
+        robot.verticalSlideMotorRight.set(0.1);
 
         //initial intakeServo
-        robot.intakeServo.turnToAngle(180);
+        //robot.intakeServo.turnToAngle(180);
 
         //telemetry
         telemetry.addData("Robot Status", "Initialized");
-        telemetry.addData("Slide Motor", robot.verticalSlideMotor1.getCurrentPosition());
-        telemetry.addData("Intake Servo", robot.intakeServo.getPosition());
+        telemetry.addData("Slide Motor Left", robot.verticalSlideMotorLeft.getCurrentPosition());
+        telemetry.addData("Slide Motor Right", robot.verticalSlideMotorRight.getCurrentPosition());
+        //telemetry.addData("Intake Servo", robot.intakeServo.getPosition());
         telemetry.update();
     }
     public void VslideRun(){
@@ -83,50 +91,70 @@ public class VslideControl {
                 if (gamepad.getButton(GamepadKeys.Button.X) && debouncerTimer.seconds() > DEBOUNCE_INTERVAL) {
                     debouncerTimer.reset();
                     buttonPressed = true;
-                    robot.verticalSlideMotor1.setTargetPosition(slideUp);
-                    robot.verticalSlideMotor1.setRunMode(Motor.RunMode.PositionControl);
-                    robot.verticalSlideMotor1.set(0.5);
-                    SlideState = SLIDESTATE.SLIDE_EXTEND;
+                    robot.verticalSlideMotorLeft.setTargetPosition(slideUp);
+                    robot.verticalSlideMotorRight.setTargetPosition(slideUp);
+                    robot.verticalSlideMotorLeft.setRunMode(Motor.RunMode.PositionControl);
+                    robot.verticalSlideMotorRight.setRunMode(Motor.RunMode.PositionControl);
+                    robot.verticalSlideMotorLeft.set(0.5);
+                    robot.verticalSlideMotorRight.set(0.5);
+                    SlideState = SLIDESTATE.SLIDE_MID;
                 }
                 else{
                     buttonPressed = false;
+
                 }
                 break;
-            case SLIDE_EXTEND:
+            case SLIDE_MID:
                 if(isLeftAtPosition(slideUp)) {
-                    robot.intakeServo.setPosition(intakeOut);
+                    //robot.intakeServo.setPosition(intakeOut);
                     liftTimer.reset();
-                    SlideState = SLIDESTATE.INTAKE_OUT;
+                    if(liftTimer.seconds() >= grabTime) {
+                        SlideState = SLIDESTATE.SLID_HIGH;
+                    }
                 };
                 break;
-            case INTAKE_OUT:
-                if(liftTimer.seconds() >= grabTime){
-                    robot.intakeServo.setPosition(intakeIn);
-                    SlideState = SLIDESTATE.SLIDE_RETRACT;
+            case SLID_HIGH:
+                robot.verticalSlideMotorLeft.setTargetPosition(slideMid);
+                robot.verticalSlideMotorRight.setTargetPosition(slideMid);
+                robot.verticalSlideMotorLeft.setRunMode(Motor.RunMode.PositionControl);
+                robot.verticalSlideMotorRight.setRunMode(Motor.RunMode.PositionControl);
+                robot.verticalSlideMotorLeft.set(0.5);
+                robot.verticalSlideMotorRight.set(0.5);
+                if (isLeftAtPosition(slideMid)){
+                    liftTimer.reset();
+                    if(liftTimer.seconds() >= grabTime){
+                        //robot.intakeServo.setPosition(intakeIn);
+                        SlideState = SLIDESTATE.SLIDE_RETRACT;
+                    }
                 }
                 break;
-
             case SLIDE_RETRACT:
-                robot.verticalSlideMotor1.setTargetPosition(slideDown);;
-                robot.verticalSlideMotor1.set(0.3);
+                robot.verticalSlideMotorLeft.setTargetPosition(slideDown);
+                robot.verticalSlideMotorRight.setTargetPosition(slideDown);
+                robot.verticalSlideMotorLeft.setRunMode(Motor.RunMode.PositionControl);
+                robot.verticalSlideMotorRight.setRunMode(Motor.RunMode.PositionControl);
+                robot.verticalSlideMotorLeft.set(0.5);
+                robot.verticalSlideMotorRight.set(0.5);
                 SlideState = SLIDESTATE.SLIDE_START;
                 break;
         }
 
         //return start state
-        if ((gamepad.getButton(GamepadKeys.Button.Y)) && SlideState != SLIDESTATE.SLIDE_START) {
+        if ((gamepad.getButton(GamepadKeys.Button.Y)) && SlideState != SLIDESTATE.SLIDE_START && debouncerTimer.seconds() > DEBOUNCE_INTERVAL) {
+            debouncerTimer.reset();
             SlideState = SLIDESTATE.SLIDE_START;
-            robot.verticalSlideMotor1.set(0); // Ensure the motor is stopped
+            robot.verticalSlideMotorRight.set(0);
+            robot.verticalSlideMotorLeft.set(0);// Ensure the motor is stopped
         }
         // Get the current position of the armMotor
-        double position = robot.verticalSlideMotor1.getCurrentPosition();
+        double position = robot.verticalSlideMotorRight.getCurrentPosition();
 
         // Get the target position of the armMotor
-        double desiredPosition = robot.verticalSlideMotor1.getDistance();
+        double desiredPosition = robot.verticalSlideMotorRight.getDistance();
 
         // Show the position of the armMotor on telemetry
         double resolution = position/CPR;
-        double angle = resolution/360;
+        double angle = resolution*360;
         double angle_normalized = resolution%360;
 
         telemetry.addData("Encoder Position","%.2f", position);
@@ -136,7 +164,7 @@ public class VslideControl {
 
         telemetry.addData("resolution Position", "%.2f", resolution);
 
-        telemetry.addData("Servo Position", "%.2f",robot.intakeServo.getPosition());
+        //telemetry.addData("Servo Position", "%.2f",robot.intakeServo.getPosition());
 
         telemetry.addData("r_angle", "%.2f", angle);
 
@@ -149,7 +177,7 @@ public class VslideControl {
 
     // Helper method to check if the lift is within the desired position threshold
     private boolean isLeftAtPosition(int targetPosition) {
-        return Math.abs(robot.verticalSlideMotor1.getCurrentPosition() - targetPosition) <= 10;
+        return Math.abs(robot.verticalSlideMotorLeft.getCurrentPosition() - targetPosition) <= 10 && Math.abs(robot.verticalSlideMotorRight.getCurrentPosition() - targetPosition) <= 10;
     }
 }
 
