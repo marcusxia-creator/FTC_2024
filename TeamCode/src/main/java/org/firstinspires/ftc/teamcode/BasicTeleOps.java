@@ -16,7 +16,7 @@ public class BasicTeleOps extends OpMode {
     public RobotHardware robot;
     public GamepadEx gamepadControl2;
     public RobotMecaDrive robotDrive;
-    //public ColSensorTest ColorSensor; // declare color sensor
+    public ColSensorTest ColorSensor; // declare color sensor
     public VslideControl vslideControl;
 
     /*
@@ -67,7 +67,7 @@ public class BasicTeleOps extends OpMode {
         vslideControl.VslideInitial();
 
         //initiate colorsensor
-        //ColorSensor = new ColSensorTest(robot, telemetry);
+        ColorSensor = new ColSensorTest(robot, telemetry);
 
         // telemetry
         status  = telemetry.addData("Status", "Initialized");
@@ -80,10 +80,11 @@ public class BasicTeleOps extends OpMode {
         encoderHeadings = telemetry.addData("encoder_Headings ", "%.2f", robotHeading);
         encoderXPos = telemetry.addData("encoder_X position ", 0);
         encoderYPos = telemetry.addData("encoder_Y position ", 0);
-        _color_red = telemetry.addData("Red",valueOf(0.0));
-        _color_blue = telemetry.addData("Blue",valueOf(0.0));
-        _color_green = telemetry.addData("Green",valueOf(0.0));
-        */
+         */
+        _color_red = telemetry.addData("Red",0.0);
+        _color_blue = telemetry.addData("Blue",0.0);
+        _color_green = telemetry.addData("Green",0.0);
+
         telemetry.update();
     }
 
@@ -103,7 +104,7 @@ public class BasicTeleOps extends OpMode {
         robot.backRightMotor.set(0);
         robot.verticalSlideMotorLeft.set(0);
         robot.verticalSlideMotorRight.set(0);
-        //robot.intakeServo.setPosition(0.2);
+        robot.intakeServo.setPosition(0.2);
         telemetry.addData("Status", "Robot stopped");
         telemetry.update();
     }
@@ -116,12 +117,11 @@ public class BasicTeleOps extends OpMode {
         //encoderYPos.setValue(String.format("%.2f", robotY));
         //encoderHeadings.setValue(String.format("%.2f", robotHeading));
 
-        /*
+
         //Update color sensor values correctly
         _color_red.setValue(ColorSensor.getColor()[0]);
         _color_blue.setValue(ColorSensor.getColor()[2]);
         _color_green.setValue(ColorSensor.getColor()[1]);
-        */
         leftFrontMotorPower.setValue(String.format("%.2f", robot.frontLeftMotor.getVelocity()));
         rightFrontMotorPower.setValue(String.format("%.2f", robot.frontRightMotor.getVelocity()));
         leftBackMotorPower.setValue(String.format("%.2f", robot.backLeftMotor.getVelocity()));

@@ -24,14 +24,13 @@ public class VslideControl {
     // config grabtime
     private final double grabTime = 3;
 
-    // config slide position and intake position
+    // config slide position
     int slideUp = 1000;
     int slideMid = 2000;
-
-
     // Position of the arm when it's down
     int slideDown = 10;
-    // position of servo
+
+    // config servo position of servo
     double intakeOut = 90;
     double intakeIn = 120;
     double grabPosition = 0.5;
@@ -173,11 +172,11 @@ public class VslideControl {
         telemetry.addData("Time", "%.2f",liftTimer.seconds());
 
         telemetry.update();
-    }
+    }// end of Vslide control method
 
     // Helper method to check if the lift is within the desired position threshold
     private boolean isLeftAtPosition(int targetPosition) {
         return Math.abs(robot.verticalSlideMotorLeft.getCurrentPosition() - targetPosition) <= 10 && Math.abs(robot.verticalSlideMotorRight.getCurrentPosition() - targetPosition) <= 10;
     }
-}
+}//end of class
 

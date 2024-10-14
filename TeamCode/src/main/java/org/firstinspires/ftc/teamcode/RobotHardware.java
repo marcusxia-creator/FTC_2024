@@ -36,9 +36,10 @@ public class RobotHardware {
     public MotorEx verticalSlideMotorLeft;
     public MotorEx verticalSlideMotorRight;
 
-    //public ServoEx intakeServo;
+    public ServoEx intakeServo;
+    public ServoEx intakeArmServo;
 
-    //public SensorColor ColorSensor;
+    public SensorColor ColorSensor;
 
     public HardwareMap hardwareMap;
 
@@ -66,7 +67,8 @@ public class RobotHardware {
         verticalSlideMotorRight = new MotorEx(hardwareMap,"VS_Motor_Right", Motor.GoBILDA.RPM_312);
 
         //set intake servo
-        //intakeServo = new SimpleServo(hardwareMap, "Intake_Servo",0,300, AngleUnit.DEGREES);
+        intakeServo = new SimpleServo(hardwareMap, "Intake_Servo",0,300, AngleUnit.DEGREES);
+        intakeArmServo = new SimpleServo(hardwareMap, "Intake_Servo",0,300, AngleUnit.DEGREES);
 
         /*
         // reset odometry encoder
@@ -100,7 +102,7 @@ public class RobotHardware {
         //resetDriveEncoders();
 
         // set color sensor
-        //ColorSensor = new SensorColor(hardwareMap, "Color_Sensor");
+        ColorSensor = new SensorColor(hardwareMap, "Color_Sensor");
 
     }
 

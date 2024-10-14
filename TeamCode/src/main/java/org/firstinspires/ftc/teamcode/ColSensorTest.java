@@ -34,12 +34,11 @@ public class ColSensorTest {
         return new int[]{redValue, greenValue, blueValue};
     }
 
-    /*
+
     public void displayColorTelemetry() {
         telemetry.addData("Red", redValue);
         telemetry.addData("Green", greenValue);
         telemetry.addData("Blue", blueValue);
         telemetry.update();
     }
-     */
 }
