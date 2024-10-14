@@ -73,6 +73,9 @@ public class VslideControl {
         robot.verticalSlideMotorLeft.set(0.1);
         robot.verticalSlideMotorRight.set(0.1);
 
+        robot.intakeArmServo.setPosition(0.5);
+        robot.intakeServo.setPosition(0.5);
+
         //initial intakeServo
         //robot.intakeServo.turnToAngle(180);
 
@@ -108,6 +111,7 @@ public class VslideControl {
                     //robot.intakeServo.setPosition(intakeOut);
                     liftTimer.reset();
                     if(liftTimer.seconds() >= grabTime) {
+                        robot.intakeArmServo.setPosition(0.2);
                         SlideState = SLIDESTATE.SLID_HIGH;
                     }
                 };
