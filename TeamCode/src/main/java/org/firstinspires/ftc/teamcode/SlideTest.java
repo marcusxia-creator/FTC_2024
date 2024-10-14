@@ -38,8 +38,6 @@ public class SlideTest extends LinearOpMode {
         // Motor CPR
         int CPR = 537;
 
-
-
         // Find a motor in the hardware map named "Arm Motor"
         armMotorLeft = hardwareMap.dcMotor.get("VS_Motor_Left");
         armMotorRight = hardwareMap.dcMotor.get("VS_Motor_Right");
@@ -130,5 +128,5 @@ public class SlideTest extends LinearOpMode {
 
             telemetry.update();
         }
-    }
-}
+    }//end main loop
+}//end SlideTest class
