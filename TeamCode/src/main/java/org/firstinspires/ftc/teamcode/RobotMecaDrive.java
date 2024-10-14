@@ -23,13 +23,15 @@ public class RobotMecaDrive {
     private ControlMode controlMode = ControlMode.FIELD_CENTRIC;
     private ElapsedTime debounceTimer = new ElapsedTime();
     private MecanumDrive drive;
+    double powerFactor;
 
     // set button for robotic drive condition
     private boolean startPressed = false;
 
-    public RobotMecaDrive(RobotHardware robot,GamepadEx gamepad){
+    public RobotMecaDrive(RobotHardware robot,GamepadEx gamepad, double powerFactor){
         this.robot = robot;
         this.gamepad = gamepad;
+        this.powerFactor= powerFactor;
     }
 
     public void MecanDriveInitial(){
@@ -37,7 +39,7 @@ public class RobotMecaDrive {
     }
 
     public void MecanDriveLoop() {
-        final double powerFactor = 0.7;
+        //;
         double strafePower = gamepad.getRightX();
         double drivePower = gamepad.getRightY();
         double rotatePower = gamepad.getLeftX();

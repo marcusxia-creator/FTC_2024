@@ -57,7 +57,7 @@ public class BasicTeleOps extends OpMode {
         gamepadControl2 = new GamepadEx(gamepad2);
 
         // initial Mecanmum drive
-        robotDrive = new RobotMecaDrive(robot, gamepadControl2);
+        robotDrive = new RobotMecaDrive(robot, gamepadControl2,0.5);
         robotDrive.MecanDriveInitial();
 
         //initial Vertical Slides
@@ -65,7 +65,7 @@ public class BasicTeleOps extends OpMode {
         vslideControl.VslideInitial();
 
         //initiate colorsensor
-        ColorSensor = new ColSensorTest(robot, telemetry);
+        //ColorSensor = new ColSensorTest(robot, telemetry);
 
         // telemetry
         status  = telemetry.addData("Status", "Initialized");
@@ -83,7 +83,7 @@ public class BasicTeleOps extends OpMode {
     public void loop() {
         robotDrive.MecanDriveLoop();
         vslideControl.VslideRun();
-        updateOdometry(); // update odometry
+
         updateTelemetry();// show color sensor signal as well
 
     }
@@ -94,8 +94,9 @@ public class BasicTeleOps extends OpMode {
         robot.frontRightMotor.set(0);
         robot.backLeftMotor.set(0);
         robot.backRightMotor.set(0);
-        robot.verticalSlideMotor1.set(0);
-        robot.intakeServo.setPosition(0.2);
+        robot.verticalSlideMotorLeft.set(0);
+        robot.verticalSlideMotorRight.set(0);
+        //robot.intakeServo.setPosition(0.2);
         telemetry.addData("Status", "Robot stopped");
         telemetry.update();
     }
@@ -104,18 +105,20 @@ public class BasicTeleOps extends OpMode {
         status.setValue("Status","running");
         //Update IMU Angle Correctly using yaw()
         headings.setValue(String.format("%.2f", robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)));
-        encoderXPos.setValue(String.format("%.2f", robotX));
-        encoderYPos.setValue(String.format("%.2f", robotY));
-        encoderHeadings.setValue(String.format("%.2f", robotHeading));
+        //encoderXPos.setValue(String.format("%.2f", robotX));
+        //encoderYPos.setValue(String.format("%.2f", robotY));
+        //encoderHeadings.setValue(String.format("%.2f", robotHeading));
 
+        /*
         //Update color sensor values correctly
         _color_red.setValue(ColorSensor.getColor()[0]);
         _color_blue.setValue(ColorSensor.getColor()[2]);
         _color_green.setValue(ColorSensor.getColor()[1]);
-
+        */
         telemetry.update();
     }
 
+    /*
     private void updateOdometry(){
         //get the current encoder positions
         int currentLeftEncoder = robot.leftodometry.getCurrentPosition();
@@ -148,6 +151,7 @@ public class BasicTeleOps extends OpMode {
         robotX += deltaForwardInches * Math.cos(robotHeading) - deltaLateralInches * Math.sin(robotHeading);
         robotY += deltaForwardInches * Math.sin(robotHeading) + deltaLateralInches * Math.cos(robotHeading);
     }
+
     // Function to wrap the angle between -π and π (radians)
     private double wrapAngle(double angle) {
         while (angle > Math.PI) {
@@ -158,5 +162,6 @@ public class BasicTeleOps extends OpMode {
         }
         return angle;
     }
+    */
 }
 
