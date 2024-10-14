@@ -8,7 +8,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name = "Slides_Test_GW", group = "Linear Opmode")
 public class SlideTest extends LinearOpMode {
-    public DcMotor armMotor;
+    public DcMotor armMotorLeft;
+    public DcMotor armMotorRight;
     private static final double DEBOUNCE_TIME = 0.2; // 200 milliseconds
     private ElapsedTime debounceTimer = new ElapsedTime();
     private boolean buttonPressed = false;
@@ -40,14 +41,18 @@ public class SlideTest extends LinearOpMode {
 
 
         // Find a motor in the hardware map named "Arm Motor"
-        armMotor = hardwareMap.dcMotor.get("SlideMotor");
+        armMotorLeft = hardwareMap.dcMotor.get("VS_Motor_Left");
+        armMotorRight = hardwareMap.dcMotor.get("VS_Motor_Right");
 
         // Reset the motor encoder so that it reads zero ticks
-        armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armMotorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armMotorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armMotorLeft.setDirection(DcMotor.Direction.REVERSE);
+
 
         // Sets the starting position of the arm to the down position
-        armMotor.setTargetPosition(armDownPosition);
-        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armMotorLeft.setTargetPosition(armDownPosition);
+        armMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         telemetry.addData("Robot Status", "Initialized");
         telemetry.update();
@@ -56,37 +61,37 @@ public class SlideTest extends LinearOpMode {
         while (opModeIsActive()) {
             // If the A button is pressed, raise the arm
             if (gamepad1.a) {
-                armMotor.setTargetPosition(armUpPosition);
-                armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                armMotor.setPower(0.5);
+                armMotorLeft.setTargetPosition(armUpPosition);
+                armMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                armMotorLeft.setPower(0.5);
             }
 
             // If the B button is pressed, lower the arm
             if (gamepad1.b) {
-                armMotor.setTargetPosition(armDownPosition);
-                armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                armMotor.setPower(0.5);
+                armMotorLeft.setTargetPosition(armDownPosition);
+                armMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                armMotorLeft.setPower(0.5);
             }
 
             if (gamepad1.x && debounceTimer.seconds() > DEBOUNCE_TIME) {
-                armNewPosition =armMotor.getCurrentPosition() + 20;
-                armMotor.setTargetPosition(armNewPosition);
-                armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                armMotor.setPower(0.5);
+                armNewPosition =armMotorLeft.getCurrentPosition() + 20;
+                armMotorLeft.setTargetPosition(armNewPosition);
+                armMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                armMotorLeft.setPower(0.5);
             }
 
             if (gamepad1.y && debounceTimer.seconds() > DEBOUNCE_TIME) {
-                armNewPosition = armMotor.getCurrentPosition() - 20;
-                armMotor.setTargetPosition(armNewPosition);
-                armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                armMotor.setPower(0.5);
+                armNewPosition = armMotorLeft.getCurrentPosition() - 20;
+                armMotorLeft.setTargetPosition(armNewPosition);
+                armMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                armMotorLeft.setPower(0.5);
             }
 
             // Get the current position of the armMotor
-            double position = armMotor.getCurrentPosition();
+            double position = armMotorLeft.getCurrentPosition();
 
             // Get the target position of the armMotor
-            double desiredPosition = armMotor.getTargetPosition();
+            double desiredPosition = armMotorLeft.getTargetPosition();
 
             // Show the position of the armMotor on telemetry
             double resolution = position/537.7;
