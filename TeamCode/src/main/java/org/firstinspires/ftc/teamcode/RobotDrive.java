@@ -81,7 +81,7 @@ public class RobotDrive {
         // Reset IMU heading using button back and reset odometry
         if (gamepad.getButton(BACK) && !backPressed) {
             robot.initIMU();
-            robot.resetDriveEncoders();
+            //robot.resetDriveEncoders();
             debounceTimer.reset();
             backPressed = true;
         } else if (!gamepad.getButton(BACK)) {
@@ -101,32 +101,35 @@ public class RobotDrive {
 
         // Update telemetry with the latest data
         updateTelemetry(drive, strafe, rotate, currentHeading);
-    }
+    }// end of driveloop
 
     private void updateTelemetry(double drive, double strafe, double rotate, double currentHeading) {
         // Update existing telemetry items with new values
+        status = telemetry.addData("Status Run Time", "Run Time: ");
+        leftMotorPower = telemetry.addData("Left Motor Power", 0);
+        rightMotorPower = telemetry.addData("Right Motor Power", 0);
+        telemetry.addLine("------------------");
+        drivePower = telemetry.addData("Drive Power", 0);
+        strafePower = telemetry.addData("Strafe Power", 0);
+        rotatePower = telemetry.addData("Rotate Power", 0);
+        motorVelocities = telemetry.addData("Motor Velocities", "");
+        heading = telemetry.addData("Heading", 0);
+        controlModeItem = telemetry.addData("Control Mode", controlMode.toString());
+        //set value
         status.setValue(String.format("Run Time: %.2f", debounceTimer.seconds()));
         imuAngle.setValue(String.format("%.2f", currentHeading));
-        leftMotorPower.setValue(robot.frontLeftMotor.getCPR());
-        rightMotorPower.setValue(robot.frontRightMotor.getCPR());
-        leftEncoder.setValue(robot.leftodometry.getCurrentPosition());
-        rightEncoder.setValue(robot.rightodometry.getCurrentPosition());
-
+        leftMotorPower.setValue(robot.frontLeftMotor.getPower());
+        rightMotorPower.setValue(robot.frontRightMotor.getPower());
         drivePower.setValue(drive);
         strafePower.setValue(strafe);
         rotatePower.setValue(rotate);
-
         motorVelocities.setValue(String.format("LF:%g, RF:%g, LB:%g, RB:%g",
                 getVelocity()[0], getVelocity()[1], getVelocity()[2], getVelocity()[3]));
 
-        encoderCounts.setValue(String.format("L:%d, R:%d, C:%d",
-                getEncoderCounts()[0], getEncoderCounts()[1], getEncoderCounts()[2]));
-
         heading.setValue(currentHeading);
         controlModeItem.setValue(controlMode.toString());
-
         telemetry.update();
-    }
+    }//end of Telemetry
 
     private double getRobotHeading() {
         // Get the robot's heading from IMU
@@ -180,20 +183,15 @@ public class RobotDrive {
 
         // Set motor powers
         double powerFactor = 0.5;
-        setMotorPower(frontLeftPower * powerFactor,robot.frontLeftMotor);
-        setMotorPower(frontRightPower * powerFactor,robot.frontRightMotor);
-        setMotorPower(backLeftPower * powerFactor,robot.backLeftMotor);
-        setMotorPower(backRightPower * powerFactor,robot.backRightMotor);
-        //robot.frontLeftMotor.set(Range.clip(frontLeftPower * powerFactor, -1.0, 1.0));
-        //robot.frontRightMotor.set(Range.clip(frontRightPower * powerFactor, -1.0, 1.0));
-        //robot.backLeftMotor.set(Range.clip(backLeftPower * powerFactor, -1.0, 1.0));
-        //robot.backRightMotor.set(Range.clip(backRightPower * powerFactor, -1.0, 1.0));
+        robot.frontLeftMotor.setPower(Range.clip(frontLeftPower * powerFactor, -1.0, 1.0));
+        robot.frontRightMotor.setPower(Range.clip(frontRightPower * powerFactor, -1.0, 1.0));
+        robot.backLeftMotor.setPower(Range.clip(backLeftPower * powerFactor, -1.0, 1.0));
+        robot.backRightMotor.setPower(Range.clip(backRightPower * powerFactor, -1.0, 1.0));
 
     }
-    private void setMotorPower(double power, Motor motor){
-        motor.set(Range.clip(power,-1.0,1.0));
-    }
+
     // Method to get left encoder count
+    /*
     public int [] getEncoderCounts() {
         int[] counts = new int[3];
         counts[0] = robot.leftodometry.getCurrentPosition();
@@ -201,7 +199,7 @@ public class RobotDrive {
         counts[2] = robot.centerodometry.getCurrentPosition();
         return counts;
     }
-
+    */
     public double[] getVelocity() {
         double[] velocities = new double[4];
         velocities[0] = robot.frontLeftMotor.getVelocity();

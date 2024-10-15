@@ -52,6 +52,12 @@ public class FiniteMachineStateArm {
     public void armLoop() {
         // Display current lift state and telemetry feedback
         telemetry.addData("Lift State", liftState.toString());
+        telemetry.addData("Servo position", robot.intakeServo.getPosition());
+        telemetry.addData("Servo position", robot.intakeServo.getAngle());
+        telemetry.addData("lift motor", robot.liftMotorLeft.getCurrentPosition());
+        telemetry.addData("lift motor", robot.liftMotorLeft.getTargetPosition());
+        telemetry.addData("Right motor", robot.liftMotorRight.getCurrentPosition());
+        telemetry.addData("Right motor", robot.liftMotorRight.getTargetPosition());
         telemetry.update();
 
         switch (liftState) {
@@ -60,8 +66,11 @@ public class FiniteMachineStateArm {
                 if (gamepad.getButton(GamepadKeys.Button.X) && debounceTimer.seconds() > DEBOUNCE_THRESHOLD) {
                     debounceTimer.reset();
                     robot.liftMotorLeft.setTargetPosition(LIFT_HIGH);
+                    robot.liftMotorRight.setTargetPosition(LIFT_HIGH);
                     robot.liftMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.liftMotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.liftMotorLeft.setPower(0.4);
+                    robot.liftMotorRight.setPower(0.4);
                     liftState = LiftState.LIFT_EXTEND;
                 }
                 break;
@@ -78,7 +87,11 @@ public class FiniteMachineStateArm {
                 if (liftTimer.seconds() >= DUMP_TIME) {
                     robot.intakeServo.setPosition(DUMP_IDLE); // Reset servo to idle
                     robot.liftMotorLeft.setTargetPosition(LIFT_LOW); // Start retracting the lift
+                    robot.liftMotorRight.setTargetPosition(LIFT_LOW); // Start retracting the lift
                     robot.liftMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.liftMotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.liftMotorLeft.setPower(0.3);
+                    robot.liftMotorRight.setPower(0.3);
                     liftState = LiftState.LIFT_RETRACT;
                 }
                 break;
