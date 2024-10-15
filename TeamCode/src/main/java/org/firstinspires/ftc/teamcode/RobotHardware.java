@@ -1,9 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.arcrobotics.ftclib.hardware.ServoEx;
-import com.arcrobotics.ftclib.hardware.SimpleServo;
-import com.arcrobotics.ftclib.hardware.motors.Motor;
-import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -20,18 +16,15 @@ public class RobotHardware {
     public DcMotorEx backLeftMotor;
     public DcMotorEx frontRightMotor;
     public DcMotorEx backRightMotor;
-    //public MotorEx leftodometry;
+    //public MotorEx leftodometry; //FTClib declear
     //public MotorEx rightodometry;
     //public MotorEx centerodometry;
-    public IMU imu;
-
-
-    public HardwareMap hardwareMap;
-
     public DcMotorEx liftMotorLeft;
     public DcMotorEx liftMotorRight;
-
     public ServoEx intakeServo;
+    
+    public IMU imu;
+    public HardwareMap hardwareMap;
 
     public void init(HardwareMap hardwareMap) {
         this.hardwareMap = hardwareMap; // store the hardwareMap reference
@@ -54,7 +47,8 @@ public class RobotHardware {
         liftMotorRight = hardwareMap.get(DcMotorEx.class, "VS_motor_Right");
 
     //set intake gribber servo
-        intakeServo = new SimpleServo(hardwareMap, "IntakeArm_Servo",90,180, AngleUnit.DEGREES);
+        //intakeServo = new SimpleServo(hardwareMap, "IntakeArm_Servo",90,180, AngleUnit.DEGREES);// FTClib type map
+        intakeServo = hardwareMap.get(Servo.class, "IntakeArm_Servo");
 
         // set odometry
         //leftodometry = new MotorEx(hardwareMap, "FL_Motor");// set odometry
@@ -88,14 +82,15 @@ public class RobotHardware {
     }
         // Initialize IMU
     public void initIMU() {
-        // get imu from hardwareMap
-        //imu = hardwareMap.get(BNO055IMU.class, "Adafruit_IMU");
-        // Initialize IMU parameter setup
-        //BNO055IMU.Parameters imuParameters = new BNO055IMU.Parameters();
-        //imuParameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        //imuParameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        /* get imu from hardwareMap
+        imu = hardwareMap.get(BNO055IMU.class, "Adafruit_IMU");
+        Initialize IMU parameter setup
+        BNO055IMU.Parameters imuParameters = new BNO055IMU.Parameters();
+        imuParameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        imuParameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         // initialize IMU
-        //imu.initialize(imuParameters);
+        imu.initialize(imuParameters);
+        */
 
         // set up REVimu
         imu = hardwareMap.get(IMU.class, "imu");
