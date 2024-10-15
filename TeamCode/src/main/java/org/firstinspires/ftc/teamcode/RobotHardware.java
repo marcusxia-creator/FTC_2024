@@ -21,7 +21,7 @@ public class RobotHardware {
     //public MotorEx centerodometry;
     public DcMotorEx liftMotorLeft;
     public DcMotorEx liftMotorRight;
-    public ServoEx intakeServo;
+    public Servo intakeServo;
     
     public IMU imu;
     public HardwareMap hardwareMap;
