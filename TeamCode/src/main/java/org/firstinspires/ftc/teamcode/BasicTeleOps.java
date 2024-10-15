@@ -19,7 +19,7 @@ public class BasicTeleOps extends OpMode {
         gamepadCo1 = new GamepadEx(gamepad2);
         robotDrive = new RobotDrive(robot, gamepadCo1, telemetry); // Pass robot instance to RobotDrive
         robotDrive.init(); // Initialize RobotDrive
-        armDrive = new FiniteMachineStateArm(robot, gamepadCo2, telemetry,0.5, 1.0, 1.0, 100, 500); // Pass parameters as needed);
+        armDrive = new FiniteMachineStateArm(robot, gamepadCo1, telemetry,0.5, .07, 1.0, 500, 900); // Pass parameters as needed);
         armDrive.init();
         telemetry.addLine("-------------------");
         telemetry.addData("Status"," initialized Motors and Encoder and IMU and Arm Control");
@@ -31,5 +31,17 @@ public class BasicTeleOps extends OpMode {
     public void loop() {
         robotDrive.driveLoop(); // Use RobotDrive methods
         armDrive.armLoop();
+    }
+
+    public void stop() {;
+        robot.frontLeftMotor.set(0);
+        robot.frontRightMotor.set(0);
+        robot.backLeftMotor.set(0);
+        robot.backRightMotor.set(0);
+        robot.liftMotorLeft.setPower(0);
+        //robot.verticalSlideMotorRight.set(0);
+        robot.intakeServo.setPosition(0.2);
+        telemetry.addData("Status", "Robot stopped");
+        telemetry.update();
     }
 }
