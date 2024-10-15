@@ -3,16 +3,17 @@
 ### This branch is Team 24135 initial teleOps created by Coach Marcus as a demo.
 #### Created General Hardware Mapping Class.
 1. Hardware mapping including:
+	Contorl hub: 	FL_Motor port 0 -- BL_Motor port 1 -- FR_Motor port 2 -- BR_Motor port 3
+	Expansion hub: liftMotor_left port 0 -- liftMotor_right port 1
 
-	FL_Motor port 0 -- BL_Motor Port 1 -- FR_Motor port 2 -- BR_Motor port 3
+	IMU is Rev control hub IMU on I2C port 0 
+	IMU initialization - is using IMU generic interface - logo face up and usb face backward
 
-	IMU is Rev control hub IMU 
- 
-	IMU initialization - is using IMU generic interface
+ 	Color Sensor: Contorl hub I2C port 1
+3. Created RobotDrive class for Mecanmum Wheel Drive, with the selection of FIELDCENTERIC or ROBOTCENTERIC by using "Start" button.
+   FTC SDK used.
 
-2. Created RobotDrive class for Mecanmum Wheel Drive, with the selection of FIELDCENTERIC or ROBOTCENTERIC by using "Start" button.
-
-3. Created BasicTeleOps class to drive the 'testrobot'.
+4. Created BasicTeleOps class to drive the 'testrobot'.
 
 ## NOTICE
 
