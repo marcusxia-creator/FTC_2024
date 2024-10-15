@@ -4,12 +4,11 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcontroller.external.samples.SensorColor;
 
 public class RobotHardware {
     public DcMotorEx frontLeftMotor;
@@ -21,24 +20,16 @@ public class RobotHardware {
     //public MotorEx centerodometry;
     public DcMotorEx liftMotorLeft;
     public DcMotorEx liftMotorRight;
-    public Servo intakeServo;
+    public Servo IntakeServo;
+    public Servo IntakeArmServo;
+    public SensorColor Color_Sensor;
     
     public IMU imu;
     public HardwareMap hardwareMap;
 
     public void init(HardwareMap hardwareMap) {
         this.hardwareMap = hardwareMap; // store the hardwareMap reference
-
-        // set drivebase motors
-        //frontLeftMotor = new MotorEx(hardwareMap, "FL_Motor", Motor.GoBILDA.RPM_435);
-        //backLeftMotor = new MotorEx(hardwareMap, "BL_Motor", Motor.GoBILDA.RPM_435);
-        //frontRightMotor = new MotorEx(hardwareMap, "FR_Motor", Motor.GoBILDA.RPM_435);
-        //backRightMotor = new MotorEx(hardwareMap, "BR_Motor", Motor.GoBILDA.RPM_435);
-        // set h slide motor Some hardware access boilerplate; these would be initialized in init()
-        //   the lift motor, it's in RUN_TO_POSITION mode
-        //liftMotorLeft = new MotorEx(hardwareMap, "VS_Motor_Left", Motor.GoBILDA.RPM_312);
-        //liftMotorRight = new MotorEx(hardwareMap, "VS_Motor_Right", Motor.GoBILDA.RPM_312);
-
+    //set Motors
         frontLeftMotor = hardwareMap.get(DcMotorEx.class, "FL_Motor");
         backLeftMotor = hardwareMap.get(DcMotorEx.class, "BL_Motor");
         frontRightMotor = hardwareMap.get(DcMotorEx.class, "FR_Motor");
@@ -48,9 +39,13 @@ public class RobotHardware {
 
     //set intake gribber servo
         //intakeServo = new SimpleServo(hardwareMap, "IntakeArm_Servo",90,180, AngleUnit.DEGREES);// FTClib type map
-        intakeServo = hardwareMap.get(Servo.class, "IntakeArm_Servo");
+        IntakeServo = hardwareMap.get(Servo.class, "Intake_Servo");
+        IntakeArmServo = hardwareMap.get(Servo.class, "IntakeArm_Servo");
 
-        // set odometry
+    //set color sensor
+        Color_Sensor = hardwareMap.get(SensorColor.class,"Color_Sensor");
+
+    // set odometry
         //leftodometry = new MotorEx(hardwareMap, "FL_Motor");// set odometry
         //rightodometry = new MotorEx(hardwareMap, "BL_Motor");// set odometry
         //centerodometry = new MotorEx(hardwareMap, "FR_Motor");// set odometry
@@ -59,7 +54,7 @@ public class RobotHardware {
         //rightodometry.resetEncoder();
         //centerodometry.resetEncoder();
 
-        //set motor mode and motor direction
+    //set motor mode and motor direction
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);  // Reverse the left motor if needed
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);  // Reverse the left motor if needed
         frontLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER); // set motor mode
@@ -67,22 +62,23 @@ public class RobotHardware {
         frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER); // set motor mode
         backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER); // set motor mode
 
-        //set to RUN_TO_POSITION
+    //set to RUN_TO_POSITION for vertical slide motor
         liftMotorLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         liftMotorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         liftMotorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         liftMotorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         liftMotorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        // set robot motor power 0
+    // set robot motor power 0
         frontLeftMotor.setPower(0);
         frontRightMotor.setPower(0);
         backLeftMotor.setPower(0);
         backRightMotor.setPower(0);
-    }
-        // Initialize IMU
+    }// End of init
+    
+    // Initialize IMU
     public void initIMU() {
-        /* get imu from hardwareMap
+        /* get imu from hardwareMap for external IMU
         imu = hardwareMap.get(BNO055IMU.class, "Adafruit_IMU");
         Initialize IMU parameter setup
         BNO055IMU.Parameters imuParameters = new BNO055IMU.Parameters();
@@ -91,14 +87,13 @@ public class RobotHardware {
         // initialize IMU
         imu.initialize(imuParameters);
         */
-
-        // set up REVimu
+    // set up REVimu
         imu = hardwareMap.get(IMU.class, "imu");
         imu.initialize(
                 new IMU.Parameters(new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP, RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD))
         );
     }
-        // reset encoders when stop
+    // reset encoders when stop
     /*
     public void resetDriveEncoders() {
         leftodometry.stopAndResetEncoder();

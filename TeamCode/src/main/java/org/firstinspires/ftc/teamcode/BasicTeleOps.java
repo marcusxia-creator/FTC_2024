@@ -4,7 +4,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name = "BasicTeleOps_GW", group = "Linear Opmode")
+@TeleOp(name = "TeleOps_Mecanum_FMS", group = "OpMode")
 public class BasicTeleOps extends OpMode {
     public  RobotHardware robot;
     public GamepadEx gamepadCo1;
@@ -40,7 +40,7 @@ public class BasicTeleOps extends OpMode {
         robot.backRightMotor.setPower(0);
         robot.liftMotorLeft.setPower(0);
         robot.liftMotorRight.setPower(0);
-        robot.intakeServo.setPosition(0.2);
+        robot.IntakeServo.setPosition(0.2);
         telemetry.addData("Status", "Robot stopped");
         telemetry.update();
     }

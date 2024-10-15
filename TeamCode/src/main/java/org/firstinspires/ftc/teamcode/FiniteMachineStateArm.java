@@ -45,15 +45,18 @@ public class FiniteMachineStateArm {
     public void init() {
         liftTimer.reset();
         robot.liftMotorLeft.setTargetPosition(LIFT_LOW);
+        robot.liftMotorRight.setTargetPosition(LIFT_LOW);
         robot.liftMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.liftMotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.liftMotorLeft.setPower(0.2); // Make sure lift motor is on
+        robot.liftMotorRight.setPower(0.2);
     }
 
     public void armLoop() {
         // Display current lift state and telemetry feedback
         telemetry.addData("Lift State", liftState.toString());
-        telemetry.addData("Servo position", robot.intakeServo.getPosition());
-        telemetry.addData("Servo position", robot.intakeServo.getAngle());
+        telemetry.addData("Servo position", robot.IntakeServo.getPosition());
+        telemetry.addData("Servo position", robot.IntakeArmServo.getPosition());
         telemetry.addData("lift motor", robot.liftMotorLeft.getCurrentPosition());
         telemetry.addData("lift motor", robot.liftMotorLeft.getTargetPosition());
         telemetry.addData("Right motor", robot.liftMotorRight.getCurrentPosition());
@@ -77,7 +80,7 @@ public class FiniteMachineStateArm {
             case LIFT_EXTEND:
                 // Check if the lift has reached the high position
                 if (isLiftAtPosition(LIFT_HIGH)) {
-                    robot.intakeServo.setPosition(DUMP_DEPOSIT); // Move servo to dump position
+                    robot.IntakeArmServo.setPosition(DUMP_DEPOSIT); // Move servo to dump position
                     liftTimer.reset();
                     liftState = LiftState.LIFT_DUMP;
                 }
@@ -85,7 +88,7 @@ public class FiniteMachineStateArm {
             case LIFT_DUMP:
                 // Wait for the dump time to pass
                 if (liftTimer.seconds() >= DUMP_TIME) {
-                    robot.intakeServo.setPosition(DUMP_IDLE); // Reset servo to idle
+                    robot.IntakeArmServo.setPosition(DUMP_IDLE); // Reset servo to idle
                     robot.liftMotorLeft.setTargetPosition(LIFT_LOW); // Start retracting the lift
                     robot.liftMotorRight.setTargetPosition(LIFT_LOW); // Start retracting the lift
                     robot.liftMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -97,6 +100,12 @@ public class FiniteMachineStateArm {
                 break;
             case LIFT_RETRACT:
                 // Check if the lift has reached the low position
+                robot.liftMotorLeft.setTargetPosition(100); // Start retracting the lift
+                robot.liftMotorRight.setTargetPosition(100); // Start retracting the lift
+                robot.liftMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.liftMotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.liftMotorLeft.setPower(0.3);
+                robot.liftMotorRight.setPower(0.3);
                 if (isLiftAtPosition(LIFT_LOW)) {
                     robot.liftMotorLeft.setPower(0); // Stop the motor after reaching the low position
                     liftState = LiftState.LIFT_START;
