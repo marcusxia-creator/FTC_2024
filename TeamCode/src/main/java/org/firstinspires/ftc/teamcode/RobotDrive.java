@@ -17,9 +17,11 @@ public class RobotDrive {
 
     private final GamepadEx gamepad;
     private final RobotHardware robot;
+    private final double powerFactor;
     private ControlMode controlMode = ControlMode.FIELD_CENTRIC;
     private ElapsedTime debounceTimer = new ElapsedTime(); // Timer for debouncing
     private Telemetry telemetry;
+
 
     private boolean startPressed = false;
     private boolean backPressed = false;
@@ -38,10 +40,11 @@ public class RobotDrive {
     private Telemetry.Item heading;
     private Telemetry.Item controlModeItem;
 
-    public RobotDrive(RobotHardware robot, GamepadEx gamepad, Telemetry telemetry) {
+    public RobotDrive(RobotHardware robot, GamepadEx gamepad, Telemetry telemetry, double powerFactor) {
         this.robot = robot;
         this.gamepad = gamepad;
         this.telemetry = telemetry;
+        this.powerFactor = powerFactor;
     }
 
     public void init() {
@@ -182,7 +185,6 @@ public class RobotDrive {
         }
 
         // Set motor powers
-        double powerFactor = 0.5;
         robot.frontLeftMotor.setPower(Range.clip(frontLeftPower * powerFactor, -1.0, 1.0));
         robot.frontRightMotor.setPower(Range.clip(frontRightPower * powerFactor, -1.0, 1.0));
         robot.backLeftMotor.setPower(Range.clip(backLeftPower * powerFactor, -1.0, 1.0));
