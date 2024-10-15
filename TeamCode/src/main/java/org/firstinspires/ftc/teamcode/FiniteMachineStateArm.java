@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -43,8 +44,9 @@ public class FiniteMachineStateArm {
 
     public void init() {
         liftTimer.reset();
-        robot.liftMotor.setTargetPosition(LIFT_LOW);
-        robot.liftMotor.set(1.0); // Make sure lift motor is on
+        robot.liftMotorLeft.setTargetPosition(LIFT_LOW);
+        robot.liftMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.liftMotorLeft.setPower(0.2); // Make sure lift motor is on
     }
 
     public void armLoop() {
@@ -57,7 +59,9 @@ public class FiniteMachineStateArm {
                 // Debounce the button press for starting the lift extend
                 if (gamepad.getButton(GamepadKeys.Button.X) && debounceTimer.seconds() > DEBOUNCE_THRESHOLD) {
                     debounceTimer.reset();
-                    robot.liftMotor.setTargetPosition(LIFT_HIGH);
+                    robot.liftMotorLeft.setTargetPosition(LIFT_HIGH);
+                    robot.liftMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.liftMotorLeft.setPower(0.4);
                     liftState = LiftState.LIFT_EXTEND;
                 }
                 break;
@@ -73,14 +77,15 @@ public class FiniteMachineStateArm {
                 // Wait for the dump time to pass
                 if (liftTimer.seconds() >= DUMP_TIME) {
                     robot.intakeServo.setPosition(DUMP_IDLE); // Reset servo to idle
-                    robot.liftMotor.setTargetPosition(LIFT_LOW); // Start retracting the lift
+                    robot.liftMotorLeft.setTargetPosition(LIFT_LOW); // Start retracting the lift
+                    robot.liftMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     liftState = LiftState.LIFT_RETRACT;
                 }
                 break;
             case LIFT_RETRACT:
                 // Check if the lift has reached the low position
                 if (isLiftAtPosition(LIFT_LOW)) {
-                    robot.liftMotor.set(0); // Stop the motor after reaching the low position
+                    robot.liftMotorLeft.setPower(0); // Stop the motor after reaching the low position
                     liftState = LiftState.LIFT_START;
                 }
                 break;
@@ -92,12 +97,12 @@ public class FiniteMachineStateArm {
         // Handle lift cancel action if 'Y' button is pressed
         if (gamepad.getButton(GamepadKeys.Button.Y) && liftState != LiftState.LIFT_START) {
             liftState = LiftState.LIFT_START;
-            robot.liftMotor.set(0); // Ensure the motor is stopped
+            robot.liftMotorLeft.setPower(0); // Ensure the motor is stopped
         }
     }
 
     // Helper method to check if the lift is within the desired position threshold
     private boolean isLiftAtPosition(int targetPosition) {
-        return Math.abs(robot.liftMotor.getCurrentPosition() - targetPosition) < 10;
+        return Math.abs(robot.liftMotorLeft.getCurrentPosition() - targetPosition) < 10;
     }
 }

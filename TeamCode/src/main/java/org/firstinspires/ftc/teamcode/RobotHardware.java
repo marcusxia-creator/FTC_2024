@@ -5,6 +5,8 @@ import com.arcrobotics.ftclib.hardware.SimpleServo;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -25,7 +27,8 @@ public class RobotHardware {
 
     public HardwareMap hardwareMap;
 
-    public MotorEx liftMotor;
+    public DcMotorEx liftMotorLeft;
+    public DcMotorEx liftMotorRight;
 
     public ServoEx intakeServo;
 
@@ -39,10 +42,13 @@ public class RobotHardware {
         backRightMotor = new MotorEx(hardwareMap, "BR_Motor", Motor.GoBILDA.RPM_435);
         // set h slide motor Some hardware access boilerplate; these would be initialized in init()
         //   the lift motor, it's in RUN_TO_POSITION mode
-        liftMotor = new MotorEx(hardwareMap, 'H_Slide_Motor', Motor.GoBILDA.RPM_312);
+        //liftMotorLeft = new MotorEx(hardwareMap, "VS_Motor_Left", Motor.GoBILDA.RPM_312);
+        //liftMotorRight = new MotorEx(hardwareMap, "VS_Motor_Right", Motor.GoBILDA.RPM_312);
 
-        //set intake gribber servo
-        intakeServo = new SimpleServo(hardwareMap, 'H_Slide_Servo',-175,175, AngleUnit.DEGREES);
+        liftMotorLeft=hardwareMap.get(DcMotorEx.class,"VS_Motor_Left");
+
+    //set intake gribber servo
+        intakeServo = new SimpleServo(hardwareMap, "IntakeArm_Servo",90,180, AngleUnit.DEGREES);
 
         // set odometry
         leftodometry = new MotorEx(hardwareMap, "FL_Motor");// set odometry
@@ -62,7 +68,7 @@ public class RobotHardware {
         backRightMotor.setRunMode((Motor.RunMode.RawPower)); // set motor mode
 
         //set to RUN_TO_POSITION
-        liftMotor.setRunMode(Motor.RunMode.PositionControl);
+        liftMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         // set robot motor power 0
         frontLeftMotor.set(0);
