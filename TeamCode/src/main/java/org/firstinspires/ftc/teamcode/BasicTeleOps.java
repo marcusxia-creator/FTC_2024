@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp(name = "TeleOps_Mecanum_FMS", group = "OpMode")
 public class BasicTeleOps extends OpMode {
-    public  RobotHardware robot;
+    public RobotHardware robot;
     public GamepadEx gamepadCo1;
     public GamepadEx gamepadCo2;
     public RobotDrive robotDrive;
