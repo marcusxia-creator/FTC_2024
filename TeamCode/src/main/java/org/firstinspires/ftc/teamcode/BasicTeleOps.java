@@ -5,7 +5,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
+@Config
 @TeleOp(name = "TeleOps_Mecanum_FMS", group = "OpMode")
 public class BasicTeleOps extends OpMode {
     public RobotHardware robot;
@@ -16,15 +16,23 @@ public class BasicTeleOps extends OpMode {
     private FtcDashboard dashboard;
     private TelemetryManager telemetryManager;
 
+    public static double powerFactor = 0.5;
+    public static double depArm_Idle = 0.5;
+    public static double demArm_Drop = 0.05;
+    public static double dropTime = 1.0
+    public static int downLiftpos = 200;
+    public static int upLiftpos = 1500;
+    
+    
     @Override
     public void init() {
         telemetryManager = new telemetryManager(telemetry);
         robot = new RobotHardware();
         robot.init(hardwareMap); // Initialize hardware in RobotHardware
         gamepadCo1 = new GamepadEx(gamepad2);
-        robotDrive = new RobotDrive(robot, gamepadCo1, telemetryManager,0.5); // Pass robot instance to RobotDrive
+        robotDrive = new RobotDrive(robot, gamepadCo1, telemetryManager,powerFactor); // Pass robot instance to RobotDrive
         robotDrive.init(); // Initialize RobotDrive
-        depositArmDrive = new FiniteMachineStateArm(robot, gamepadCo1, telemetryManager,0.5, .07, 1.0, 500, 1500); // Pass parameters as needed);
+        depositArmDrive = new FiniteMachineStateArm(robot, gamepadCo1, telemetryManager,depArm_Idle, demArm_Drop, dropTime, downLiftpos, upLiftpos); // Pass parameters as needed);
         depositArmDrive.init();
         dashboard = FtcDashboard.getInstance();
         telemetry.addLine("-------------------");
@@ -54,7 +62,6 @@ public class BasicTeleOps extends OpMode {
         packet.put("Lift Motor Left Position", robot.liftMotorLeft.getCurrentPosition());
         packet.put("Lift Motor Right Position", robot.liftMotorRight.getCurrentPosition());
         packet.put("IMU Heading", robot.getIMUHeading()); // Assuming there's a method to get IMU heading
-
         dashboard.sentTelemetryPacket(packet);
     }
 
@@ -65,7 +72,7 @@ public class BasicTeleOps extends OpMode {
         robot.backRightMotor.setPower(0);
         robot.liftMotorLeft.setPower(0);
         robot.liftMotorRight.setPower(0);
-        robot.IntakeServo.setPosition(0.2);
+        robot.IntakeServo.setPosition(1.0);
         telemetryManager.update("Status", "Robot stopped");
     }
 }
