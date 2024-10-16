@@ -38,6 +38,7 @@ public class RobotDrive {
     private Telemetry.Item encoderCounts;
     private Telemetry.Item heading;
     private Telemetry.Item controlModeItem;
+    
 
     public RobotDrive(RobotHardware robot, GamepadEx gamepad, TelemetryManager telemetryManager, double powerFactor) {
         this.robot = robot;
@@ -65,7 +66,6 @@ public class RobotDrive {
         encoderCounts = telemetry.addData("Encoder Counts", "");
         heading = telemetry.addData("Heading", 0);
         controlModeItem = telemetry.addData("Control Mode", controlMode.toString());
-
         telemetry.update();
     }
 
