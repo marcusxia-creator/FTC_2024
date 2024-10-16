@@ -50,6 +50,11 @@ public class FiniteMachineStateArm {
         robot.liftMotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.liftMotorLeft.setPower(0.2); // Make sure lift motor is on
         robot.liftMotorRight.setPower(0.2);
+
+        telemetry.addData("Lift Motor Left Position", robot.liftMotorLeft.getCurrentPosition());
+        telemetry.addData("Lift Motor Right Position", robot.liftMotorRight.getCurrentPosition());
+        telemetry.update();
+
     }
 
     public void armLoop() {
