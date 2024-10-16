@@ -27,8 +27,6 @@ public class RobotDrive {
     //declare Telemetry items
     private Telemetry.Item status;
     private Telemetry.Item imuAngle;
-    private Telemetry.Item leftMotorPower;
-    private Telemetry.Item rightMotorPower;
     private Telemetry.Item leftEncoder;
     private Telemetry.Item rightEncoder;
     private Telemetry.Item drivePower;
@@ -55,8 +53,6 @@ public class RobotDrive {
         // Initialize telemetry items for dynamic updates
         status = telemetry.addData("Status", "Run Time: ");
         imuAngle = telemetry.addData("IMU Angle", "Initializing...");
-        leftMotorPower = telemetry.addData("Left Motor Power", 0);
-        rightMotorPower = telemetry.addData("Right Motor Power", 0);
         leftEncoder = telemetry.addData("Left Encoder", 0);
         rightEncoder = telemetry.addData("Right Encoder", 0);
         drivePower = telemetry.addData("Drive Power", 0);
