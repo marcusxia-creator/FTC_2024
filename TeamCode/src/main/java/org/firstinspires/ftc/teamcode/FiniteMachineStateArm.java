@@ -108,6 +108,7 @@ public class FiniteMachineStateArm {
                 robot.liftMotorRight.setPower(0.3);
                 if (isLiftAtPosition(100)) {
                     robot.liftMotorLeft.setPower(0); // Stop the motor after reaching the low position
+                    robot.liftMotorRight.setPower(0);
                     liftState = LiftState.LIFT_START;
                 }
                 break;
