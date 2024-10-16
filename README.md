@@ -1,19 +1,7 @@
 ## Team 24135 Notes
 ### This is the 24135 branch based on the FTC SDK for the INTO THE DEEP (2024-2025) competition season.
-### This branch is Team 24135 initial teleOps created by Coach Marcus as a demo.
+### This branch is Team 24135 Dashboard Test created by Coach Marcus as a demo.
 #### Created General Hardware Mapping Class.
-1. Hardware mapping including:
-
-	FL_Motor port 0 -- BL_Motor Port 1 -- FR_Motor port 2 -- BR_Motor port 3
-
-	IMU is Rev control hub IMU 
- 
-	IMU initialization - is using IMU generic interface
-
-2. Created RobotDrive class for Mecanmum Wheel Drive, with the selection of FIELDCENTERIC or ROBOTCENTERIC by using "Start" button.
-
-3. Created BasicTeleOps class to drive the 'testrobot'.
-
 
 ## NOTICE
 
