@@ -19,7 +19,7 @@ public class RobotDrive {
     private final double powerFactor;
     private ControlMode controlMode = ControlMode.FIELD_CENTRIC;
     private ElapsedTime debounceTimer = new ElapsedTime(); // Timer for debouncing
-    private Telemetry telemetry;
+    private final TelemetryManager telemetryManager;
 
 
     private boolean startPressed = false;
@@ -39,10 +39,10 @@ public class RobotDrive {
     private Telemetry.Item heading;
     private Telemetry.Item controlModeItem;
 
-    public RobotDrive(RobotHardware robot, GamepadEx gamepad, Telemetry telemetry, double powerFactor) {
+    public RobotDrive(RobotHardware robot, GamepadEx gamepad, TelemetryManager telemetryManager, double powerFactor) {
         this.robot = robot;
         this.gamepad = gamepad;
-        this.telemetry = telemetry;
+        this.telemetryManager = telemetryManager;
         this.powerFactor = powerFactor;
     }
 
@@ -105,32 +105,16 @@ public class RobotDrive {
         updateTelemetry(drive, strafe, rotate, currentHeading);
     }// end of driveloop
 
-    private void updateTelemetry(double drive, double strafe, double rotate, double currentHeading) {
-        // Update existing telemetry items with new values
-        status = telemetry.addData("Status Run Time", "Run Time: ");
-        leftMotorPower = telemetry.addData("Left Motor Power", 0);
-        rightMotorPower = telemetry.addData("Right Motor Power", 0);
-        telemetry.addLine("------------------");
-        drivePower = telemetry.addData("Drive Power", 0);
-        strafePower = telemetry.addData("Strafe Power", 0);
-        rotatePower = telemetry.addData("Rotate Power", 0);
-        motorVelocities = telemetry.addData("Motor Velocities", "");
-        heading = telemetry.addData("Heading", 0);
-        controlModeItem = telemetry.addData("Control Mode", controlMode.toString());
-        //set value
-        status.setValue(String.format("Run Time: %.2f", debounceTimer.seconds()));
-        imuAngle.setValue(String.format("%.2f", currentHeading));
-        leftMotorPower.setValue(robot.frontLeftMotor.getPower());
-        rightMotorPower.setValue(robot.frontRightMotor.getPower());
-        drivePower.setValue(drive);
-        strafePower.setValue(strafe);
-        rotatePower.setValue(rotate);
-        motorVelocities.setValue(String.format("LF:%g, RF:%g, LB:%g, RB:%g",
+   private void updateTelemetry(double drive, double strafe, double rotate, double currentHeading) {
+        telemetryManager.update("Run Time", debounceTimer.seconds());
+        telemetryManager.update("IMU Angle", currentHeading);
+        telemetryManager.update("Drive Power", drive);
+        telemetryManager.update("Strafe Power", strafe);
+        telemetryManager.update("Rotate Power", rotate);
+        telemetryManager.update("Motor Velocities", String.format("LF:%g, RF:%g, LB:%g, RB:%g",
                 getVelocity()[0], getVelocity()[1], getVelocity()[2], getVelocity()[3]));
-
-        heading.setValue(currentHeading);
-        controlModeItem.setValue(controlMode.toString());
-        telemetry.update();
+        telemetryManager.update("Heading", currentHeading);
+        telemetryManager.update("Control Mode", controlMode.toString());
     }//end of Telemetry
 
     private double getRobotHeading() {
