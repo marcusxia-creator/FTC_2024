@@ -11,11 +11,11 @@ public class FiniteMachineStateArm {
     private final GamepadEx gamepad;
     private final RobotHardware robot;
     private ElapsedTime debounceTimer = new ElapsedTime(); // Timer for debouncing
-    private Telemetry telemetry;
+    private final TelemetryManager telemetryManager;
 
     private final double DEBOUNCE_THRESHOLD = 0.2; // Debouncing threshold for button presses
 
-    public FiniteMachineStateArm(RobotHardware robot, GamepadEx gamepad, Telemetry telemetry, double DUMP_IDLE, double DUMP_DEPOSIT, double DUMP_TIME, int LIFT_LOW, int LIFT_HIGH) {
+    public FiniteMachineStateArm(RobotHardware robot, GamepadEx gamepad, TelemetryManager telemetryManager, double DUMP_IDLE, double DUMP_DEPOSIT, double DUMP_TIME, int LIFT_LOW, int LIFT_HIGH) {
         this.gamepad = gamepad;
         this.robot = robot;
         this.DUMP_IDLE = DUMP_IDLE;
@@ -23,7 +23,7 @@ public class FiniteMachineStateArm {
         this.DUMP_TIME = DUMP_TIME;
         this.LIFT_LOW = LIFT_LOW;
         this.LIFT_HIGH = LIFT_HIGH;
-        this.telemetry = telemetry;
+        this.telemetryManager = telemetryManager;
     }
 
     public enum LiftState {
@@ -51,22 +51,19 @@ public class FiniteMachineStateArm {
         robot.liftMotorLeft.setPower(0.2); // Make sure lift motor is on
         robot.liftMotorRight.setPower(0.2);
 
-        telemetry.addData("Lift Motor Left Position", robot.liftMotorLeft.getCurrentPosition());
-        telemetry.addData("Lift Motor Right Position", robot.liftMotorRight.getCurrentPosition());
-        telemetry.update();
-
+        telemetryManager.update("Lift Motor Left Position", robot.liftMotorLeft.getCurrentPosition());
+        telemetryManager.update("Lift Motor Right Position", robot.liftMotorRight.getCurrentPosition());
     }
 
     public void armLoop() {
         // Display current lift state and telemetry feedback
-        telemetry.addData("Lift State", liftState.toString());
-        telemetry.addData("Servo position", robot.IntakeServo.getPosition());
-        telemetry.addData("Servo position", robot.IntakeArmServo.getPosition());
-        telemetry.addData("lift motor", robot.liftMotorLeft.getCurrentPosition());
-        telemetry.addData("lift motor", robot.liftMotorLeft.getTargetPosition());
-        telemetry.addData("Right motor", robot.liftMotorRight.getCurrentPosition());
-        telemetry.addData("Right motor", robot.liftMotorRight.getTargetPosition());
-        telemetry.update();
+        telemetryManager.update("Lift State", liftState.toString());
+        telemetryManager.update("Servo position", robot.IntakeServo.getPosition());
+        telemetryManager.update("Servo position", robot.IntakeArmServo.getPosition());
+        telemetryManager.update("lift motor", robot.liftMotorLeft.getCurrentPosition());
+        telemetryManager.update("lift motor", robot.liftMotorLeft.getTargetPosition());
+        telemetryManager.update("Right motor", robot.liftMotorRight.getCurrentPosition());
+        telemetryManager.update("Right motor", robot.liftMotorRight.getTargetPosition());
 
         switch (liftState) {
             case LIFT_START:
