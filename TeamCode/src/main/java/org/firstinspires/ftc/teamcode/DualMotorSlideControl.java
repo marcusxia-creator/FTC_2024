@@ -31,7 +31,7 @@ public class DualMotorSlideControl extends LinearOpMode {
     public static int downPosition = 100;
     public static double upPower = 0.5;
     public static double downPower = 0.4;
-    public static int positionTolerance = 10;  // Tolerance in ticks (configurable)
+    public static int positionTolerance = 5;  // Tolerance in ticks (configurable)
 
     @Override
     public void runOpMode() {
