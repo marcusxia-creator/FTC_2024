@@ -10,10 +10,13 @@
 	IMU initialization - is using IMU generic interface - logo face up and usb face backward
 
  	Color Sensor: Contorl hub I2C port 1
+2. Created BasicTeleOps class to drive the 'Competition Bot v1'.
 3. Created RobotDrive class for Mecanmum Wheel Drive, with the selection of FIELDCENTERIC or ROBOTCENTERIC by using "Start" button.
-   FTC SDK used.
+   (FTC Standard SDK Library).
+4. Created Vertical Slide Contorl (FTC Standard SDK library)
+   	Used FMS Contorl Logic
+5. Add the DashBoard
 
-4. Created BasicTeleOps class to drive the 'testrobot'.
 
 ## NOTICE
 
