@@ -22,9 +22,9 @@ public class BasicTeleOps extends OpMode {
         robot = new RobotHardware();
         robot.init(hardwareMap); // Initialize hardware in RobotHardware
         gamepadCo1 = new GamepadEx(gamepad2);
-        robotDrive = new RobotDrive(robot, gamepadCo1, telemetry,0.5); // Pass robot instance to RobotDrive
+        robotDrive = new RobotDrive(robot, gamepadCo1, telemetryManager,0.5); // Pass robot instance to RobotDrive
         robotDrive.init(); // Initialize RobotDrive
-        depositArmDrive = new FiniteMachineStateArm(robot, gamepadCo1, telemetry,0.5, .07, 1.0, 500, 1500); // Pass parameters as needed);
+        depositArmDrive = new FiniteMachineStateArm(robot, gamepadCo1, telemetryManager,0.5, .07, 1.0, 500, 1500); // Pass parameters as needed);
         depositArmDrive.init();
         dashboard = FtcDashboard.getInstance();
         telemetry.addLine("-------------------");
