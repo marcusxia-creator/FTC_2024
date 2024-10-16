@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+@config
 public class FiniteMachineStateArm {
     private final GamepadEx gamepad;
     private final RobotHardware robot;
@@ -41,6 +42,9 @@ public class FiniteMachineStateArm {
     final double DUMP_TIME;   // Time for dumping action in seconds
     final int LIFT_LOW;       // Encoder position for the low position
     final int LIFT_HIGH;      // Encoder position for the high position
+    
+    public static double upLiftPower = 0.4;
+    public static double downLiftPower = 0.3;
 
     public void init() {
         liftTimer.reset();
@@ -48,8 +52,8 @@ public class FiniteMachineStateArm {
         robot.liftMotorRight.setTargetPosition(LIFT_LOW);
         robot.liftMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.liftMotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.liftMotorLeft.setPower(0.2); // Make sure lift motor is on
-        robot.liftMotorRight.setPower(0.2);
+        robot.liftMotorLeft.setPower(0); // Make sure lift motor is on
+        robot.liftMotorRight.setPower(0);
 
         telemetryManager.update("Lift Motor Left Position", robot.liftMotorLeft.getCurrentPosition());
         telemetryManager.update("Lift Motor Right Position", robot.liftMotorRight.getCurrentPosition());
@@ -74,8 +78,8 @@ public class FiniteMachineStateArm {
                     robot.liftMotorRight.setTargetPosition(LIFT_HIGH);
                     robot.liftMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.liftMotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.liftMotorLeft.setPower(0.4);
-                    robot.liftMotorRight.setPower(0.4);
+                    robot.liftMotorLeft.setPower(upLiftPower);
+                    robot.liftMotorRight.setPower(upLiftPower);
                     liftState = LiftState.LIFT_EXTEND;
                 }
                 break;
@@ -95,20 +99,14 @@ public class FiniteMachineStateArm {
                     robot.liftMotorRight.setTargetPosition(LIFT_LOW); // Start retracting the lift
                     robot.liftMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.liftMotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.liftMotorLeft.setPower(0.3);
-                    robot.liftMotorRight.setPower(0.3);
+                    robot.liftMotorLeft.setPower(downLiftPower);
+                    robot.liftMotorRight.setPower(downLiftPower);
                     liftState = LiftState.LIFT_RETRACT;
                 }
                 break;
             case LIFT_RETRACT:
                 // Check if the lift has reached the low position
-                robot.liftMotorLeft.setTargetPosition(100); // Start retracting the lift
-                robot.liftMotorRight.setTargetPosition(100); // Start retracting the lift
-                robot.liftMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.liftMotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.liftMotorLeft.setPower(0.3);
-                robot.liftMotorRight.setPower(0.3);
-                if (isLiftAtPosition(100)) {
+                if (isLiftAtPosition(LIFT_LOW)) {
                     robot.liftMotorLeft.setPower(0); // Stop the motor after reaching the low position
                     robot.liftMotorRight.setPower(0);
                     liftState = LiftState.LIFT_START;
