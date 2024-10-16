@@ -3,6 +3,8 @@
 ### This branch is developped for testbot.
 ### Used FTC lib MotorEX and GamePad.
 ### Used FTC lib Mecanumdrive class.
+### Added Dual Slide Control by using FTClib to control motor (RUNTOPOSITION)
+### Added Dashboard feature
 ### Created General Hardware Mapping Class.
 Hardware mapping including:
 
