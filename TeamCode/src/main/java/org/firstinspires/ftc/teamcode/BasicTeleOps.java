@@ -28,7 +28,6 @@ public class BasicTeleOps extends OpMode {
         telemetry.addLine("-------------------");
         telemetry.addData("Status"," initialized Motors and Encoder and IMU and Arm Control");
         telemetry.addLine("-------------------");
-        telemetry.addData("slide right motor",robot.liftMotorRight.getCurrentPosition());
         telemetry.update();
     }
 
@@ -42,10 +41,6 @@ public class BasicTeleOps extends OpMode {
         telemetry.addData("Front Right Motor Power", robot.frontRightMotor.getPower());
         telemetry.addData("Back Left Motor Power", robot.backLeftMotor.getPower());
         telemetry.addData("Back Right Motor Power", robot.backRightMotor.getPower());
-
-        telemetry.addData("Lift Motor Left Position", robot.liftMotorLeft.getCurrentPosition());
-        telemetry.addData("Lift Motor Right Position", robot.liftMotorRight.getCurrentPosition());
-
         // Update telemetry for the driver station
         telemetry.update();
 
