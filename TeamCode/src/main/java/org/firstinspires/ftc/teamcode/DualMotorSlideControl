@@ -35,8 +35,8 @@ public class DualMotorSlideControl extends LinearOpMode {
     @Override
     public void runOpMode() {
         // Initialize motors
-        liftMotorLeft = new MotorEx(hardwareMap, "liftMotorLeft", MotorEx.GoBILDA.RPM_435);
-        liftMotorRight = new MotorEx(hardwareMap, "liftMotorRight", MotorEx.GoBILDA.RPM_435);
+        liftMotorLeft = new MotorEx(hardwareMap, "VS_Motor_Left", MotorEx.GoBILDA.RPM_312);
+        liftMotorRight = new MotorEx(hardwareMap, "VS_Motor_Right", MotorEx.GoBILDA.RPM_312);
 
         // Reverse one motor if necessary
         liftMotorRight.setInverted(true);
