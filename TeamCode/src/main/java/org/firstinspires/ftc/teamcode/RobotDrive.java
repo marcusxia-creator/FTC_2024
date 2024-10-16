@@ -6,7 +6,6 @@ import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.START;
 import android.annotation.SuppressLint;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
-import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 

@@ -35,7 +35,7 @@ public class RobotHardware {
         frontRightMotor = hardwareMap.get(DcMotorEx.class, "FR_Motor");
         backRightMotor = hardwareMap.get(DcMotorEx.class, "BR_Motor");
         liftMotorLeft = hardwareMap.get(DcMotorEx.class,"VS_Motor_Left");
-        liftMotorRight = hardwareMap.get(DcMotorEx.class, "VS_motor_Right");
+        liftMotorRight = hardwareMap.get(DcMotorEx.class, "VS_Motor_Right");
 
     //set intake gribber servo
         //intakeServo = new SimpleServo(hardwareMap, "IntakeArm_Servo",90,180, AngleUnit.DEGREES);// FTClib type map
