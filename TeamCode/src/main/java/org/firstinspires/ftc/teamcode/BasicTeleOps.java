@@ -14,9 +14,11 @@ public class BasicTeleOps extends OpMode {
     public RobotDrive robotDrive;
     public FiniteMachineStateArm depositArmDrive;
     private FtcDashboard dashboard;
+    private TelemetryManager telemetryManager;
 
     @Override
     public void init() {
+        telemetryManager = new telemetryManager(telemetry);
         robot = new RobotHardware();
         robot.init(hardwareMap); // Initialize hardware in RobotHardware
         gamepadCo1 = new GamepadEx(gamepad2);
