@@ -106,7 +106,7 @@ public class FiniteMachineStateArm {
                 robot.liftMotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.liftMotorLeft.setPower(0.3);
                 robot.liftMotorRight.setPower(0.3);
-                if (isLiftAtPosition(LIFT_LOW)) {
+                if (isLiftAtPosition(100)) {
                     robot.liftMotorLeft.setPower(0); // Stop the motor after reaching the low position
                     liftState = LiftState.LIFT_START;
                 }
@@ -120,11 +120,12 @@ public class FiniteMachineStateArm {
         if (gamepad.getButton(GamepadKeys.Button.Y) && liftState != LiftState.LIFT_START) {
             liftState = LiftState.LIFT_START;
             robot.liftMotorLeft.setPower(0); // Ensure the motor is stopped
+            robot.liftMotorRight.setPower(0);
         }
     }
 
     // Helper method to check if the lift is within the desired position threshold
     private boolean isLiftAtPosition(int targetPosition) {
-        return Math.abs(robot.liftMotorLeft.getCurrentPosition() - targetPosition) < 10;
+        return Math.abs(robot.liftMotorLeft.getCurrentPosition() - targetPosition) < 5 && Math.abs(robot.liftMotorRight.getCurrentPosition() - targetPosition)<5 ;
     }
 }

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -9,6 +10,10 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.SensorColor;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 public class RobotHardware {
     public DcMotorEx frontLeftMotor;
@@ -22,7 +27,7 @@ public class RobotHardware {
     public DcMotorEx liftMotorRight;
     public Servo IntakeServo;
     public Servo IntakeArmServo;
-    public SensorColor Color_Sensor;
+    public ColorSensor Color_Sensor;
     
     public IMU imu;
     public HardwareMap hardwareMap;
@@ -43,7 +48,7 @@ public class RobotHardware {
         IntakeArmServo = hardwareMap.get(Servo.class, "IntakeArm_Servo");
 
     //set color sensor
-        Color_Sensor = hardwareMap.get(SensorColor.class,"Color_Sensor");
+        Color_Sensor = hardwareMap.get(ColorSensor.class,"Color_Sensor");
 
     // set odometry
         //leftodometry = new MotorEx(hardwareMap, "FL_Motor");// set odometry
@@ -90,8 +95,18 @@ public class RobotHardware {
     // set up REVimu
         imu = hardwareMap.get(IMU.class, "imu");
         imu.initialize(
-                new IMU.Parameters(new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP, RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD))
-        );
+                new IMU.Parameters(
+                        new RevHubOrientationOnRobot(
+                                new Orientation(
+                                        AxesReference.INTRINSIC,
+                                        AxesOrder.ZYX,
+                                        AngleUnit.DEGREES,
+                                        90,
+                                        0,
+                                        0,
+                                        0  // acquisitionTime, not used
+                                )
+                        )));
     }
     // reset encoders when stop
     /*

@@ -24,6 +24,7 @@ public class BasicTeleOps extends OpMode {
         telemetry.addLine("-------------------");
         telemetry.addData("Status"," initialized Motors and Encoder and IMU and Arm Control");
         telemetry.addLine("-------------------");
+        telemetry.addData("slide right motor",robot.liftMotorRight.getCurrentPosition());
         telemetry.update();
     }
 
