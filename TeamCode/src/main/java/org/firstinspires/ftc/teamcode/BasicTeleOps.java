@@ -28,9 +28,8 @@ public class BasicTeleOps extends OpMode {
         depositArmDrive.init();
         dashboard = FtcDashboard.getInstance();
         telemetry.addLine("-------------------");
-        telemetry.addData("Status"," initialized Motors and Encoder and IMU and Arm Control");
+        telemetryManager.update("Status"," initialized Motors and Encoder and IMU and Arm Control");
         telemetry.addLine("-------------------");
-        telemetry.update();
     }
 
     @Override
@@ -39,12 +38,12 @@ public class BasicTeleOps extends OpMode {
         depositArmDrive.armLoop();
 
         // Real-time telemetry data to Driver Station
-        telemetry.addData("Front Left Motor Power", robot.frontLeftMotor.getPower());
-        telemetry.addData("Front Right Motor Power", robot.frontRightMotor.getPower());
-        telemetry.addData("Back Left Motor Power", robot.backLeftMotor.getPower());
-        telemetry.addData("Back Right Motor Power", robot.backRightMotor.getPower());
+        telemetryManager.update("Front Left Motor Power", robot.frontLeftMotor.getPower());
+        telemetryManager.update("Front Right Motor Power", robot.frontRightMotor.getPower());
+        telemetryManager.update("Back Left Motor Power", robot.backLeftMotor.getPower());
+        telemetryManager.update("Back Right Motor Power", robot.backRightMotor.getPower());
         // Update telemetry for the driver station
-        telemetry.update();
+
 
         //FTC DashBoard telemetry packet
         TelemetryPacket packet = new TelemetryPacket();
@@ -67,7 +66,6 @@ public class BasicTeleOps extends OpMode {
         robot.liftMotorLeft.setPower(0);
         robot.liftMotorRight.setPower(0);
         robot.IntakeServo.setPosition(0.2);
-        telemetry.addData("Status", "Robot stopped");
-        telemetry.update();
+        telemetryManager.update("Status", "Robot stopped");
     }
 }
