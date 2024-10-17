@@ -91,12 +91,10 @@ public class FiniteMachineStateArm {
             case LIFT_EXTEND:
                 // Check if the lift has reached the high position
                 if (isLiftAtPosition(LIFT_HIGH)) {
-                    liftTimer.reset();
                     robot.IntakeArmServo.setPosition(DUMP_DEPOSIT); // Move servo to dump position
-                    if (liftTimer.seconds() >= DUMP_TIME) {
-                        robot.IntakeServo.setPosition(INTAKE_DUMP);
-                        liftState = LiftState.LIFT_DUMP;
-                    }
+                    robot.IntakeServo.setPosition(INTAKE_DUMP);
+                    liftState = LiftState.LIFT_DUMP;
+                    liftTimer.reset();
                 }
                 break;
             case LIFT_DUMP:
