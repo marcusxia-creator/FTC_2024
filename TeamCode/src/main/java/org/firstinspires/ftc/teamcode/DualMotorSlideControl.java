@@ -3,14 +3,13 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.arcrobotics.ftclib.hardware.motors.MotorGroup;
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
-
 
 @Config
 @TeleOp(name = "DualMotorSlideControl", group = "LinearOpMode")
@@ -49,7 +48,7 @@ public class DualMotorSlideControl extends LinearOpMode {
         motorGroup.setRunMode(MotorEx.RunMode.PositionControl);
 
         // Set PID coefficients
-        motorGroup.setPositionCoefficients(P, I, D);
+        motorGroup.setPositionCoefficient(P);
 
         // Set position tolerance
         motorGroup.setPositionTolerance(positionTolerance);
@@ -78,7 +77,7 @@ public class DualMotorSlideControl extends LinearOpMode {
             // Add motor telemetry data
             packet.put("Left Motor Position", liftMotorLeft.getCurrentPosition());
             packet.put("Right Motor Position", liftMotorRight.getCurrentPosition());
-            packet.put("Target Position", motorGroup.getTargetPosition());
+            packet.put("Target Position", motorGroup.getCurrentPosition());
             packet.put("Motor Power", motorGroup.get());
 
             // Send telemetry packet to dashboard
@@ -87,7 +86,7 @@ public class DualMotorSlideControl extends LinearOpMode {
             // Show telemetry on driver station
             telemetry.addData("Left Motor Position", liftMotorLeft.getCurrentPosition());
             telemetry.addData("Right Motor Position", liftMotorRight.getCurrentPosition());
-            telemetry.addData("Target Position", motorGroup.getTargetPosition());
+            telemetry.addData("Target Position", motorGroup.getPositions());
             telemetry.update();
         }
     }
