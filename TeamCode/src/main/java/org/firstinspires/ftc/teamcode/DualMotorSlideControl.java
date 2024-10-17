@@ -52,8 +52,10 @@ public class DualMotorSlideControl extends LinearOpMode {
 
         // Set position tolerance
         motorGroup.setPositionTolerance(positionTolerance);
-        motorGroup.resetEncoder();
-        motorGroup.stopAndResetEncoder();
+        liftMotorLeft.resetEncoder();
+        liftMotorRight.resetEncoder();
+        liftMotorLeft.stopAndResetEncoder();
+        liftMotorRight.stopAndResetEncoder();
 
         // Initialize FTC Dashboard
         FtcDashboard dashboard = FtcDashboard.getInstance();
