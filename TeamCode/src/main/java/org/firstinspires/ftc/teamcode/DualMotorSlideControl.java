@@ -86,7 +86,7 @@ public class DualMotorSlideControl extends LinearOpMode {
             // Show telemetry on driver station
             telemetry.addData("Left Motor Position", liftMotorLeft.getCurrentPosition());
             telemetry.addData("Right Motor Position", liftMotorRight.getCurrentPosition());
-            telemetry.addData("Target Position", motorGroup.getPositions());
+            telemetry.addData("Target Position", motorGroup.getFeedforwardCoefficients());
             telemetry.update();
         }
     }
