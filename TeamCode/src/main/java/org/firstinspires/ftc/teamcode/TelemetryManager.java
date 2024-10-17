@@ -22,3 +22,4 @@ public class TelemetryManager {
     public void clear() {
         telemetry.clear();
     }
+}

@@ -48,21 +48,11 @@ public class RobotDrive {
     public void init() {
         // Initialize IMU from RobotHardware
         robot.initIMU();
-        telemetry.addData("Status", "Initializing...");
+        telemetryManager.update("Status", "Initializing...");
 
         // Initialize telemetry items for dynamic updates
-        status = telemetry.addData("Status", "Run Time: ");
-        imuAngle = telemetry.addData("IMU Angle", "Initializing...");
-        leftEncoder = telemetry.addData("Left Encoder", 0);
-        rightEncoder = telemetry.addData("Right Encoder", 0);
-        drivePower = telemetry.addData("Drive Power", 0);
-        strafePower = telemetry.addData("Strafe Power", 0);
-        rotatePower = telemetry.addData("Rotate Power", 0);
-        motorVelocities = telemetry.addData("Motor Velocities", "");
-        encoderCounts = telemetry.addData("Encoder Counts", "");
-        heading = telemetry.addData("Heading", 0);
-        controlModeItem = telemetry.addData("Control Mode", controlMode.toString());
-        telemetry.update();
+        telemetryManager.update("IMU Angle", "Initializing...");
+        telemetryManager.update("Control Mode", controlMode.toString());
     }
 
     @SuppressLint("DefaultLocale")

@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-@config
 public class FiniteMachineStateArm {
     private final GamepadEx gamepad;
     private final RobotHardware robot;
@@ -16,7 +15,7 @@ public class FiniteMachineStateArm {
 
     private final double DEBOUNCE_THRESHOLD = 0.2; // Debouncing threshold for button presses
 
-    public FiniteMachineStateArm(RobotHardware robot, GamepadEx gamepad, TelemetryManager telemetryManager, double DUMP_IDLE, double DUMP_DEPOSIT, double DUMP_TIME, int LIFT_LOW, int LIFT_HIGH) {
+    public FiniteMachineStateArm(RobotHardware robot, GamepadEx gamepad, TelemetryManager telemetryManager, double DUMP_IDLE, double DUMP_DEPOSIT, double DUMP_TIME, int LIFT_LOW, int LIFT_HIGH, double upLiftPower, double downLiftPower) {
         this.gamepad = gamepad;
         this.robot = robot;
         this.DUMP_IDLE = DUMP_IDLE;
@@ -25,6 +24,8 @@ public class FiniteMachineStateArm {
         this.LIFT_LOW = LIFT_LOW;
         this.LIFT_HIGH = LIFT_HIGH;
         this.telemetryManager = telemetryManager;
+        this.upLiftPower = upLiftPower;
+        this.downLiftPower = downLiftPower;
     }
 
     public enum LiftState {
@@ -42,9 +43,8 @@ public class FiniteMachineStateArm {
     final double DUMP_TIME;   // Time for dumping action in seconds
     final int LIFT_LOW;       // Encoder position for the low position
     final int LIFT_HIGH;      // Encoder position for the high position
-    
-    public static double upLiftPower = 0.4;
-    public static double downLiftPower = 0.3;
+    final double upLiftPower;
+    final double downLiftPower;
 
     public void init() {
         liftTimer.reset();
