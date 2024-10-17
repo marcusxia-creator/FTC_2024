@@ -21,8 +21,8 @@ public class BasicTeleOps extends OpMode {
     private TelemetryManager telemetryManager;
 
     public static double powerFactor = 0.5;
-    public static double dump_Idle = 0.5;
-    public static double dump_Deposit = 0.05;
+    public static double dump_Idle = 0.9;
+    public static double dump_Deposit = 0.1;
     public static double dropTime = 1.0;
     public static double intake_Idle = 0.4;
     public static double intake_Dump = 0.0;
