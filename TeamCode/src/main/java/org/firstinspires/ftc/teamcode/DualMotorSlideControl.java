@@ -26,10 +26,10 @@ public class DualMotorSlideControl extends LinearOpMode {
     public static double D = 0.0;
 
     // Positions and powers (configurable through FTC Dashboard)
-    public static int upPosition = 1500;
-    public static int downPosition = 100;
-    public static double upPower = 0.5;
-    public static double downPower = 0.4;
+    public static int upPosition = 1000;
+    public static int downPosition = 500;
+    public static double upPower = 0.1;
+    public static double downPower = 0.1;
     public static int positionTolerance = 5;  // Tolerance in ticks (configurable)
 
     @Override
@@ -39,7 +39,7 @@ public class DualMotorSlideControl extends LinearOpMode {
         liftMotorRight = new MotorEx(hardwareMap, "VS_Motor_Right", MotorEx.GoBILDA.RPM_312);
 
         // Reverse one motor if necessary
-        liftMotorRight.setInverted(true);
+        liftMotorLeft.setInverted(true);
 
         // Group the two motors together
         motorGroup = new MotorGroup(liftMotorLeft, liftMotorRight);
@@ -89,7 +89,7 @@ public class DualMotorSlideControl extends LinearOpMode {
             // Show telemetry on driver station
             telemetry.addData("Left Motor Position", liftMotorLeft.getCurrentPosition());
             telemetry.addData("Right Motor Position", liftMotorRight.getCurrentPosition());
-            telemetry.addData("Target Position", motorGroup.getFeedforwardCoefficients());
+            telemetry.addData("Power", motorGroup.get());
             telemetry.update();
         }
     }
