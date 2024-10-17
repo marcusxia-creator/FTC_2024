@@ -27,6 +27,7 @@ public class FiniteMachineStateArm {
         this.DOWNLIFT_POWER = DOWNLIFT_POWER;
         this.INTAKE_IDLE = INTAKE_IDLE;
         this.INTAKE_DUMP = INTAKE_DUMP;
+        this.RETRACT_TIME = RETRACT_TIME;
     }
 
     public enum LiftState {
