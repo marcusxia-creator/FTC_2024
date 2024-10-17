@@ -95,8 +95,8 @@ public class FiniteMachineStateArm {
                 if (isLiftAtPosition(LIFT_HIGH)) {
                     robot.IntakeArmServo.setPosition(DUMP_DEPOSIT); // Move servo to dump position
                     robot.IntakeServo.setPosition(INTAKE_DUMP);
-                    liftState = LiftState.LIFT_DUMP;
                     liftTimer.reset();
+                    liftState = LiftState.LIFT_DUMP;
                 }
                 break;
             case LIFT_DUMP:
@@ -104,19 +104,19 @@ public class FiniteMachineStateArm {
                 if (liftTimer.seconds() >= DUMP_TIME) {
                     robot.IntakeArmServo.setPosition(DUMP_IDLE); // Reset servo to idle
                     robot.IntakeServo.setPosition(INTAKE_IDLE);
-                }
-                if(liftTimer.seconds()>= RETRACT_TIME){
                     liftState = LiftState.LIFT_RETRACT;
                 }
                 break;
             case LIFT_RETRACT:
                 // Check if the lift has reached the low position
-                robot.liftMotorLeft.setTargetPosition(LIFT_LOW); // Start retracting the lift
-                robot.liftMotorRight.setTargetPosition(LIFT_LOW); // Start retracting the lift
-                robot.liftMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.liftMotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.liftMotorLeft.setPower(DOWNLIFT_POWER);
-                robot.liftMotorRight.setPower(DOWNLIFT_POWER);
+                if(liftTimer.seconds()>= RETRACT_TIME) {
+                    robot.liftMotorLeft.setTargetPosition(LIFT_LOW); // Start retracting the lift
+                    robot.liftMotorRight.setTargetPosition(LIFT_LOW); // Start retracting the lift
+                    robot.liftMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.liftMotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.liftMotorLeft.setPower(DOWNLIFT_POWER);
+                    robot.liftMotorRight.setPower(DOWNLIFT_POWER);
+                }
                 if (isLiftAtPosition(LIFT_LOW)) {
                     robot.liftMotorLeft.setPower(0); // Stop the motor after reaching the low position
                     robot.liftMotorRight.setPower(0);

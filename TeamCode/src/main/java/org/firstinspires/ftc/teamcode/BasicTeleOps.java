@@ -23,16 +23,16 @@ public class BasicTeleOps extends OpMode {
     public static double powerFactor = 0.5;
     public static double dump_Idle = 0.9;
     public static double dump_Deposit = 0.1;
-    public static double dropTime = 1.0;
-    public static double retractTime = 2.0;
+    public static double dropTime = 1.5;
+    public static double retractTime = 2.8;
     public static double intake_Idle = 0.3;
     public static double intake_Dump = 0.0;
     //slides position
-    public static int downLiftpos = 200;
-    public static int upLiftpos = 1500;
+    public static int downLiftpos = 100;
+    public static int upLiftpos = 2500;
     //slides power
-    public static double upLiftPower = 0.4;
-    public static double downLiftPower = 0.3;
+    public static double upLiftPower = 0.7;
+    public static double downLiftPower = 0.5;
 
     
     @Override
@@ -43,7 +43,7 @@ public class BasicTeleOps extends OpMode {
         gamepadCo1 = new GamepadEx(gamepad2);
         robotDrive = new RobotDrive(robot, gamepadCo1, telemetryManager,powerFactor); // Pass robot instance to RobotDrive
         robotDrive.init(); // Initialize RobotDrive
-        depositArmDrive = new FiniteMachineStateArm(robot, gamepadCo1, telemetryManager,dump_Idle, dump_Deposit, dropTime,retractTime, intake_Idle, intake_Dump, downLiftpos, upLiftpos, upLiftPower, downLiftPower); // Pass parameters as needed);
+        depositArmDrive = new FiniteMachineStateArm(robot, gamepadCo1, telemetryManager, dump_Idle, dump_Deposit, dropTime, retractTime, intake_Idle, intake_Dump, downLiftpos, upLiftpos, upLiftPower, downLiftPower); // Pass parameters as needed);
         depositArmDrive.init();
         dashboard = FtcDashboard.getInstance();
         telemetry.addLine("-------------------");
@@ -76,7 +76,7 @@ public class BasicTeleOps extends OpMode {
         dashboard.sendTelemetryPacket(packet);
     }
 
-    public void stop() {;
+    public void stop() {
         robot.frontLeftMotor.setPower(0);
         robot.frontRightMotor.setPower(0);
         robot.backLeftMotor.setPower(0);
