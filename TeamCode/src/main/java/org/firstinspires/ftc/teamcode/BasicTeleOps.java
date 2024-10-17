@@ -24,7 +24,7 @@ public class BasicTeleOps extends OpMode {
     public static double dump_Idle = 0.9;
     public static double dump_Deposit = 0.1;
     public static double dropTime = 1.0;
-    public static double intake_Idle = 0.4;
+    public static double intake_Idle = 0.3;
     public static double intake_Dump = 0.0;
     //slides position
     public static int downLiftpos = 200;
