@@ -14,7 +14,7 @@ public class FiniteMachineStateArm {
 
     private final double DEBOUNCE_THRESHOLD = 0.2; // Debouncing threshold for button presses
 
-    public FiniteMachineStateArm(RobotHardware robot, GamepadEx gamepad, TelemetryManager telemetryManager, double DUMP_IDLE, double DUMP_DEPOSIT, double DUMP_TIME, double INTAKE_IDLE,double INTAKE_DUMP,int LIFT_LOW, int LIFT_HIGH, double UPLIFT_POWER, double DOWNLIFT_POWER) {
+    public FiniteMachineStateArm(RobotHardware robot, GamepadEx gamepad, TelemetryManager telemetryManager, double DUMP_IDLE, double DUMP_DEPOSIT, double DUMP_TIME, double RETRACT_TIME, double INTAKE_IDLE,double INTAKE_DUMP,int LIFT_LOW, int LIFT_HIGH, double UPLIFT_POWER, double DOWNLIFT_POWER) {
         this.gamepad = gamepad;
         this.robot = robot;
         this.DUMP_IDLE = DUMP_IDLE;
@@ -48,6 +48,7 @@ public class FiniteMachineStateArm {
     final double DOWNLIFT_POWER;
     final double INTAKE_IDLE;
     final double INTAKE_DUMP;
+    final double RETRACT_TIME;
 
     public void init() {
         liftTimer.reset();
@@ -103,7 +104,7 @@ public class FiniteMachineStateArm {
                     robot.IntakeArmServo.setPosition(DUMP_IDLE); // Reset servo to idle
                     robot.IntakeServo.setPosition(INTAKE_IDLE);
                 }
-                if(liftTimer.seconds()>= DUMP_TIME + 1){
+                if(liftTimer.seconds()>= RETRACT_TIME){
                     liftState = LiftState.LIFT_RETRACT;
                 }
                 break;

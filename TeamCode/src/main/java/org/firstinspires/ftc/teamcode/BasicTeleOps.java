@@ -24,6 +24,7 @@ public class BasicTeleOps extends OpMode {
     public static double dump_Idle = 0.9;
     public static double dump_Deposit = 0.1;
     public static double dropTime = 1.0;
+    public static double retractTime = 2.0;
     public static double intake_Idle = 0.3;
     public static double intake_Dump = 0.0;
     //slides position
@@ -42,7 +43,7 @@ public class BasicTeleOps extends OpMode {
         gamepadCo1 = new GamepadEx(gamepad2);
         robotDrive = new RobotDrive(robot, gamepadCo1, telemetryManager,powerFactor); // Pass robot instance to RobotDrive
         robotDrive.init(); // Initialize RobotDrive
-        depositArmDrive = new FiniteMachineStateArm(robot, gamepadCo1, telemetryManager,dump_Idle, dump_Deposit, dropTime, intake_Idle, intake_Dump, downLiftpos, upLiftpos, upLiftPower, downLiftPower); // Pass parameters as needed);
+        depositArmDrive = new FiniteMachineStateArm(robot, gamepadCo1, telemetryManager,dump_Idle, dump_Deposit, dropTime,retractTime, intake_Idle, intake_Dump, downLiftpos, upLiftpos, upLiftPower, downLiftPower); // Pass parameters as needed);
         depositArmDrive.init();
         dashboard = FtcDashboard.getInstance();
         telemetry.addLine("-------------------");
