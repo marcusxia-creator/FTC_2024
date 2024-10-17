@@ -8,7 +8,6 @@ import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.arcrobotics.ftclib.hardware.motors.MotorGroup;
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @Config
@@ -35,23 +34,12 @@ public class DualMotorSlideControl extends LinearOpMode {
     @Override
     public void runOpMode() {
         // Initialize motors
-        liftMotorLeft = new MotorEx(hardwareMap, "VS_Motor_Left", MotorEx.GoBILDA.RPM_312);
-        liftMotorRight = new MotorEx(hardwareMap, "VS_Motor_Right", MotorEx.GoBILDA.RPM_312);
+        liftMotorLeft = new MotorEx(hardwareMap, "FL_Motor", Motor.GoBILDA.RPM_435);
+        liftMotorRight = new MotorEx(hardwareMap, "BL_Motor", Motor.GoBILDA.RPM_435);
 
         // Reverse one motor if necessary
         liftMotorLeft.setInverted(true);
 
-        // Group the two motors together
-        motorGroup = new MotorGroup(liftMotorLeft, liftMotorRight);
-
-        // Set motors to run with encoders
-        motorGroup.setRunMode(MotorEx.RunMode.PositionControl);
-
-        // Set PID coefficients
-        motorGroup.setPositionCoefficient(P);
-
-        // Set position tolerance
-        motorGroup.setPositionTolerance(positionTolerance);
         liftMotorLeft.resetEncoder();
         liftMotorRight.resetEncoder();
         liftMotorLeft.stopAndResetEncoder();
@@ -67,12 +55,20 @@ public class DualMotorSlideControl extends LinearOpMode {
             // Check for button presses
             if (gamepad1.x) {
                 // Move slides up to the specified position
-                motorGroup.setTargetPosition(upPosition);
-                motorGroup.set(upPower); // Set power for moving up
+                liftMotorLeft.setTargetPosition(upPosition);
+                liftMotorLeft.set(0);
+                while (!liftMotorLeft.atTargetPosition()){
+                    liftMotorLeft.set(upPower); // Set power for moving up
+                }
+                liftMotorLeft.stopMotor();
             } else if (gamepad1.y) {
                 // Move slides down to the specified position
-                motorGroup.setTargetPosition(downPosition);
-                motorGroup.set(downPower); // Set power for moving down
+                liftMotorLeft.setTargetPosition(upPosition*-1);
+                liftMotorLeft.set(0);
+                while (!liftMotorLeft.atTargetPosition()){
+                    liftMotorLeft.set(upPower); // Set power for moving up
+                }
+                liftMotorLeft.stopMotor();
             }
 
             // Create telemetry packet for the dashboard
@@ -81,7 +77,7 @@ public class DualMotorSlideControl extends LinearOpMode {
             // Add motor telemetry data
             packet.put("Left Motor Position", liftMotorLeft.getCurrentPosition());
             packet.put("Right Motor Position", liftMotorRight.getCurrentPosition());
-            packet.put("Motor Power", motorGroup.get());
+            packet.put("Motor Power", liftMotorLeft.get());
 
             // Send telemetry packet to dashboard
             dashboard.sendTelemetryPacket(packet);
@@ -89,7 +85,7 @@ public class DualMotorSlideControl extends LinearOpMode {
             // Show telemetry on driver station
             telemetry.addData("Left Motor Position", liftMotorLeft.getCurrentPosition());
             telemetry.addData("Right Motor Position", liftMotorRight.getCurrentPosition());
-            telemetry.addData("Power", motorGroup.get());
+            telemetry.addData("Power", liftMotorLeft.get());
             telemetry.update();
         }
     }
