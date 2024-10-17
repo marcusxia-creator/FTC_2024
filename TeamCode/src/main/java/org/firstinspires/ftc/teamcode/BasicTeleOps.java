@@ -21,14 +21,18 @@ public class BasicTeleOps extends OpMode {
     private TelemetryManager telemetryManager;
 
     public static double powerFactor = 0.5;
-    public static double depArm_Idle = 0.5;
-    public static double demArm_Drop = 0.05;
+    public static double dump_Idle = 0.5;
+    public static double dump_Deposit = 0.05;
     public static double dropTime = 1.0;
+    public static double intake_Idle = 0.4;
+    public static double intake_Dump = 0.0;
+    //slides position
     public static int downLiftpos = 200;
     public static int upLiftpos = 1500;
-
+    //slides power
     public static double upLiftPower = 0.4;
     public static double downLiftPower = 0.3;
+
     
     @Override
     public void init() {
@@ -38,7 +42,7 @@ public class BasicTeleOps extends OpMode {
         gamepadCo1 = new GamepadEx(gamepad2);
         robotDrive = new RobotDrive(robot, gamepadCo1, telemetryManager,powerFactor); // Pass robot instance to RobotDrive
         robotDrive.init(); // Initialize RobotDrive
-        depositArmDrive = new FiniteMachineStateArm(robot, gamepadCo1, telemetryManager,depArm_Idle, demArm_Drop, dropTime, downLiftpos, upLiftpos, upLiftPower,downLiftPower); // Pass parameters as needed);
+        depositArmDrive = new FiniteMachineStateArm(robot, gamepadCo1, telemetryManager,dump_Idle, dump_Deposit, dropTime, intake_Idle, intake_Dump, downLiftpos, upLiftpos, upLiftPower, downLiftPower); // Pass parameters as needed);
         depositArmDrive.init();
         dashboard = FtcDashboard.getInstance();
         telemetry.addLine("-------------------");
