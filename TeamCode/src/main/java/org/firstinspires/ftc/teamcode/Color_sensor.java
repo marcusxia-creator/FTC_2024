@@ -9,7 +9,10 @@ public class Color_sensor {
     private int redValue;
     private int blueValue;
     private int intensity;
-
+    /*
+    config
+    color
+     */
     public Color_sensor(RobotHardware robot, TelemetryManager telemetryManager){
         this.robot = robot;
         this.telemetryManager = telemetryManager;
@@ -24,6 +27,6 @@ public class Color_sensor {
         greenValue = robot.Color_Sensor.green();
         blueValue = robot.Color_Sensor.blue();
         intensity = robot.Color_Sensor.alpha();
-        return new int[]{redValue, greenValue, blueValue};
+        return new int[]{redValue, greenValue, blueValue, intensity};
     }
 }

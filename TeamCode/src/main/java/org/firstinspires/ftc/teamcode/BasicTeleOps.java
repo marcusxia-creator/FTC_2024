@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -29,6 +30,7 @@ public class BasicTeleOps extends OpMode {
     public static double intake_Dump = 0.0;
     //slides position
     public static int downLiftpos = 100;
+    public static int upLiftmid = 1200;
     public static int upLiftpos = 2500;
     //slides power
     public static double upLiftPower = 0.7;
@@ -38,12 +40,14 @@ public class BasicTeleOps extends OpMode {
     @Override
     public void init() {
         telemetryManager = new TelemetryManager(telemetry);
+        //telemetry = new MultipleTelemetry(telemetry,FtcDashboard.getInstance().getTelemetry());
+        telemetryManager = new TelemetryManager(telemetry);
         robot = new RobotHardware();
         robot.init(hardwareMap); // Initialize hardware in RobotHardware
         gamepadCo1 = new GamepadEx(gamepad2);
         robotDrive = new RobotDrive(robot, gamepadCo1, telemetryManager,powerFactor); // Pass robot instance to RobotDrive
         robotDrive.init(); // Initialize RobotDrive
-        depositArmDrive = new FiniteMachineStateArm(robot, gamepadCo1, telemetryManager, dump_Idle, dump_Deposit, dropTime, retractTime, intake_Idle, intake_Dump, downLiftpos, upLiftpos, upLiftPower, downLiftPower); // Pass parameters as needed);
+        depositArmDrive = new FiniteMachineStateArm(robot, gamepadCo1, telemetryManager, dump_Idle, dump_Deposit, dropTime, retractTime, intake_Idle, intake_Dump, downLiftpos, upLiftmid,upLiftpos, upLiftPower, downLiftPower); // Pass parameters as needed);
         depositArmDrive.init();
         dashboard = FtcDashboard.getInstance();
         telemetry.addLine("-------------------");
@@ -61,10 +65,10 @@ public class BasicTeleOps extends OpMode {
         telemetryManager.update("Front Right Motor Power", robot.frontRightMotor.getPower());
         telemetryManager.update("Back Left Motor Power", robot.backLeftMotor.getPower());
         telemetryManager.update("Back Right Motor Power", robot.backRightMotor.getPower());
+
         // Update telemetry for the driver station
-
-
         //FTC DashBoard telemetry packet
+
         TelemetryPacket packet = new TelemetryPacket();
         packet.put("Front Left Motor Power", robot.frontLeftMotor.getPower());
         packet.put("Front Right Motor Power", robot.frontRightMotor.getPower());
@@ -74,6 +78,7 @@ public class BasicTeleOps extends OpMode {
         packet.put("Lift Motor Right Position", robot.liftMotorRight.getCurrentPosition());
         packet.put("IMU Heading",robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)); // Assuming there's a method to get IMU heading
         dashboard.sendTelemetryPacket(packet);
+
     }
 
     public void stop() {
