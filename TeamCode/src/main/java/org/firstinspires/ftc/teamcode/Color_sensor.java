@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 
 public class Color_sensor {
     private RobotHardware robot;
-    private TelemetryManager telemetryManager;
     private int greenValue;
     private int redValue;
     private int blueValue;
@@ -13,9 +12,8 @@ public class Color_sensor {
     config
     color
      */
-    public Color_sensor(RobotHardware robot, TelemetryManager telemetryManager){
+    public Color_sensor(RobotHardware robot){
         this.robot = robot;
-        this.telemetryManager = telemetryManager;
     }
 
     public int[] getColor(){

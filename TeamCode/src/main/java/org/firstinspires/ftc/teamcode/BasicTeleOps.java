@@ -18,6 +18,7 @@ public class BasicTeleOps extends OpMode {
     public GamepadEx gamepadCo2;
     public RobotDrive robotDrive;
     public FiniteMachineStateArm depositArmDrive;
+    public Color_sensor colorSensor;
     private FtcDashboard dashboard;
     private TelemetryManager telemetryManager;
 
@@ -39,8 +40,8 @@ public class BasicTeleOps extends OpMode {
     
     @Override
     public void init() {
-        telemetryManager = new TelemetryManager(telemetry);
-        //telemetry = new MultipleTelemetry(telemetry,FtcDashboard.getInstance().getTelemetry());
+        //telemetryManager = new TelemetryManager(telemetry);
+        telemetry = new MultipleTelemetry(telemetry,FtcDashboard.getInstance().getTelemetry());
         telemetryManager = new TelemetryManager(telemetry);
         robot = new RobotHardware();
         robot.init(hardwareMap); // Initialize hardware in RobotHardware
@@ -49,7 +50,8 @@ public class BasicTeleOps extends OpMode {
         robotDrive.init(); // Initialize RobotDrive
         depositArmDrive = new FiniteMachineStateArm(robot, gamepadCo1, telemetryManager, dump_Idle, dump_Deposit, dropTime, retractTime, intake_Idle, intake_Dump, downLiftpos, upLiftmid,upLiftpos, upLiftPower, downLiftPower); // Pass parameters as needed);
         depositArmDrive.init();
-        dashboard = FtcDashboard.getInstance();
+        colorSensor = new Color_sensor(robot);
+        //dashboard = FtcDashboard.getInstance();
         telemetry.addLine("-------------------");
         telemetryManager.update("Status"," initialized Motors and Encoder and IMU and Arm Control");
         telemetry.addLine("-------------------");
@@ -61,14 +63,24 @@ public class BasicTeleOps extends OpMode {
         depositArmDrive.armLoop();
 
         // Real-time telemetry data to Driver Station
-        telemetryManager.update("Front Left Motor Power", robot.frontLeftMotor.getPower());
-        telemetryManager.update("Front Right Motor Power", robot.frontRightMotor.getPower());
-        telemetryManager.update("Back Left Motor Power", robot.backLeftMotor.getPower());
-        telemetryManager.update("Back Right Motor Power", robot.backRightMotor.getPower());
+        telemetry.addData("Front Left Motor Power", robot.frontLeftMotor.getPower());
+        telemetry.addData("Front Right Motor Power", robot.frontRightMotor.getPower());
+        telemetry.addData("Back Left Motor Power", robot.backLeftMotor.getPower());
+        telemetry.addData("Back Right Motor Power", robot.backRightMotor.getPower());
+        telemetry.addData("Motor Left Position", robot.liftMotorLeft.getCurrentPosition());
+        telemetry.addData("Lift Motor Right Position", robot.liftMotorRight.getCurrentPosition());
+        telemetryManager.update("Color Sensor red", colorSensor.getColor()[0]);
+        telemetryManager.update("Color Sensor red", colorSensor.getColor()[0]);
+        telemetryManager.update("Color Sensor red", colorSensor.getColor()[0]);
+        telemetryManager.update("Lift State", depositArmDrive.State().toString());
+        telemetryManager.update("Servo Intake position", robot.IntakeServo.getPosition());
+        telemetryManager.update("Servo Intake Arm position", robot.IntakeArmServo.getPosition());
+        telemetryManager.update("lift motor TP", robot.liftMotorLeft.getTargetPosition());
+        telemetryManager.update("Right motor TP", robot.liftMotorRight.getTargetPosition());
 
         // Update telemetry for the driver station
         //FTC DashBoard telemetry packet
-
+        /*
         TelemetryPacket packet = new TelemetryPacket();
         packet.put("Front Left Motor Power", robot.frontLeftMotor.getPower());
         packet.put("Front Right Motor Power", robot.frontRightMotor.getPower());
@@ -78,7 +90,7 @@ public class BasicTeleOps extends OpMode {
         packet.put("Lift Motor Right Position", robot.liftMotorRight.getCurrentPosition());
         packet.put("IMU Heading",robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES)); // Assuming there's a method to get IMU heading
         dashboard.sendTelemetryPacket(packet);
-
+        */
     }
 
     public void stop() {

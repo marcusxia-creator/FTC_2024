@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.graphics.Color;
-
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -13,7 +11,7 @@ public class FiniteMachineStateArm {
     private final RobotHardware robot;
     private ElapsedTime debounceTimer = new ElapsedTime(); // Timer for debouncing
     private final TelemetryManager telemetryManager;
-    private Color_sensor ColorSensor;
+    private Color_sensor colorSensor;
 
     private final double DEBOUNCE_THRESHOLD = 0.2; // Debouncing threshold for button presses
 
@@ -41,6 +39,7 @@ public class FiniteMachineStateArm {
         LIFT_RETRACT
     }
 
+
     private LiftState liftState = LiftState.LIFT_START; // Persisting state
     private ElapsedTime liftTimer = new ElapsedTime(); // Timer for controlling dumping time
 
@@ -57,7 +56,7 @@ public class FiniteMachineStateArm {
     final double RETRACT_TIME;
 
     public void init() {
-        ColorSensor = new Color_sensor(robot, telemetryManager);
+        colorSensor = new Color_sensor(robot);
         liftTimer.reset();
         robot.liftMotorLeft.setTargetPosition(LIFT_LOW);
         robot.liftMotorRight.setTargetPosition(LIFT_LOW);
@@ -68,37 +67,23 @@ public class FiniteMachineStateArm {
         robot.IntakeArmServo.setPosition(DUMP_IDLE);
         robot.IntakeServo.setPosition(INTAKE_IDLE);
 
-        telemetryManager.update("Lift Motor Left Position", robot.liftMotorLeft.getCurrentPosition());
-        telemetryManager.update("Lift Motor Right Position", robot.liftMotorRight.getCurrentPosition());
-        telemetryManager.update("Color Sensor red", ColorSensor.getColor()[0]);
-        telemetryManager.update("Color Sensor red", ColorSensor.getColor()[0]);
-        telemetryManager.update("Color Sensor red", ColorSensor.getColor()[0]);
-
     }
 
     public void armLoop() {
         // Display current lift state and telemetry feedback
-        telemetryManager.update("Lift State", liftState.toString());
-        telemetryManager.update("Servo position", robot.IntakeServo.getPosition());
-        telemetryManager.update("Servo position", robot.IntakeArmServo.getPosition());
-        telemetryManager.update("lift motor", robot.liftMotorLeft.getCurrentPosition());
-        telemetryManager.update("lift motor", robot.liftMotorLeft.getTargetPosition());
-        telemetryManager.update("Right motor", robot.liftMotorRight.getCurrentPosition());
-        telemetryManager.update("Right motor", robot.liftMotorRight.getTargetPosition());
-
         switch (liftState) {
             case LIFT_START:
                 // Debounce the button press for starting the lift extend
                 if (gamepad.getButton(GamepadKeys.Button.X) && debounceTimer.seconds() > DEBOUNCE_THRESHOLD) {
                     debounceTimer.reset();
-                    if (ColorSensor.getColor()[0] < 225 || ColorSensor.getColor()[2] <225) {
-                        robot.liftMotorLeft.setTargetPosition(LIFT_MID);
-                        robot.liftMotorRight.setTargetPosition(LIFT_MID);
-                        robot.liftMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                        robot.liftMotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                        robot.liftMotorLeft.setPower(UPLIFT_POWER);
-                        robot.liftMotorRight.setPower(UPLIFT_POWER);
-                    }
+                    //if (ColorSensor.getColor()[0] < 225 || ColorSensor.getColor()[2] <225) {
+                    robot.liftMotorLeft.setTargetPosition(LIFT_HIGH);
+                    robot.liftMotorRight.setTargetPosition(LIFT_HIGH);
+                    robot.liftMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.liftMotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.liftMotorLeft.setPower(UPLIFT_POWER);
+                    robot.liftMotorRight.setPower(UPLIFT_POWER);
+                   /* }
                     else {robot.liftMotorLeft.setTargetPosition(LIFT_HIGH);
                     robot.liftMotorRight.setTargetPosition(LIFT_HIGH);
                     robot.liftMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -106,6 +91,7 @@ public class FiniteMachineStateArm {
                     robot.liftMotorLeft.setPower(UPLIFT_POWER);
                     robot.liftMotorRight.setPower(UPLIFT_POWER);
                     }
+                    */
                     liftState = LiftState.LIFT_EXTEND;
                 }
                 break;
@@ -158,5 +144,8 @@ public class FiniteMachineStateArm {
     // Helper method to check if the lift is within the desired position threshold
     private boolean isLiftAtPosition(int targetPosition) {
         return Math.abs(robot.liftMotorLeft.getCurrentPosition() - targetPosition) < 5 && Math.abs(robot.liftMotorRight.getCurrentPosition() - targetPosition) < 5;
+    }
+    LiftState State(){
+        return liftState;
     }
 }

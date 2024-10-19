@@ -24,19 +24,6 @@ public class RobotDrive {
 
     private boolean startPressed = false;
     private boolean backPressed = false;
-    //declare Telemetry items
-    private Telemetry.Item status;
-    private Telemetry.Item imuAngle;
-    private Telemetry.Item leftEncoder;
-    private Telemetry.Item rightEncoder;
-    private Telemetry.Item drivePower;
-    private Telemetry.Item strafePower;
-    private Telemetry.Item rotatePower;
-    private Telemetry.Item motorVelocities;
-    private Telemetry.Item encoderCounts;
-    private Telemetry.Item heading;
-    private Telemetry.Item controlModeItem;
-    
 
     public RobotDrive(RobotHardware robot, GamepadEx gamepad, TelemetryManager telemetryManager, double powerFactor) {
         this.robot = robot;
@@ -99,7 +86,6 @@ public class RobotDrive {
         telemetryManager.update("Rotate Power", rotate);
         telemetryManager.update("Motor Velocities", String.format("LF:%g, RF:%g, LB:%g, RB:%g",
                 getVelocity()[0], getVelocity()[1], getVelocity()[2], getVelocity()[3]));
-        telemetryManager.update("Heading", currentHeading);
         telemetryManager.update("Control Mode", controlMode.toString());
     }//end of Telemetry
 
