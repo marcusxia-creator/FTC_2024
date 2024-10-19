@@ -70,8 +70,8 @@ public class BasicTeleOps extends OpMode {
         telemetry.addData("Motor Left Position", robot.liftMotorLeft.getCurrentPosition());
         telemetry.addData("Lift Motor Right Position", robot.liftMotorRight.getCurrentPosition());
         telemetryManager.update("Color Sensor red", colorSensor.getColor()[0]);
-        telemetryManager.update("Color Sensor red", colorSensor.getColor()[0]);
-        telemetryManager.update("Color Sensor red", colorSensor.getColor()[0]);
+        telemetryManager.update("Color Sensor green", colorSensor.getColor()[1]);
+        telemetryManager.update("Color Sensor blue", colorSensor.getColor()[2]);
         telemetryManager.update("Lift State", depositArmDrive.State().toString());
         telemetryManager.update("Servo Intake position", robot.IntakeServo.getPosition());
         telemetryManager.update("Servo Intake Arm position", robot.IntakeArmServo.getPosition());
