@@ -18,7 +18,6 @@ public class Color_sensor {
 
     public int[] getColor(){
         if (robot.Color_Sensor == null) {
-            telemetryManager.update("Error", "Color sensor not initialized");
             return new int[]{0, 0, 0}; // return default values in case of error
         }
         redValue = robot.Color_Sensor.red();
