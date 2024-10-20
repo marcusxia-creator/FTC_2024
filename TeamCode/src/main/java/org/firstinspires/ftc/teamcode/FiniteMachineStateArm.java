@@ -76,23 +76,23 @@ public class FiniteMachineStateArm {
                 // Debounce the button press for starting the lift extend
                 if (gamepad.getButton(GamepadKeys.Button.X) && debounceTimer.seconds() > DEBOUNCE_THRESHOLD) {
                     debounceTimer.reset();
-                    //if (ColorSensor.getColor()[0] < 225 || ColorSensor.getColor()[2] <225) {
+                    if ((colorSensor.getColor()[0] < 220)||(colorSensor.getColor()[2] < 225)) {
                     robot.liftMotorLeft.setTargetPosition(LIFT_HIGH);
                     robot.liftMotorRight.setTargetPosition(LIFT_HIGH);
                     robot.liftMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.liftMotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.liftMotorLeft.setPower(UPLIFT_POWER);
                     robot.liftMotorRight.setPower(UPLIFT_POWER);
-                   /* }
-                    else {robot.liftMotorLeft.setTargetPosition(LIFT_HIGH);
-                    robot.liftMotorRight.setTargetPosition(LIFT_HIGH);
+                    liftState = LiftState.LIFT_EXTEND;
+                   } else {robot.liftMotorLeft.setTargetPosition(LIFT_MID);
+                    robot.liftMotorRight.setTargetPosition(LIFT_MID);
                     robot.liftMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.liftMotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.liftMotorLeft.setPower(UPLIFT_POWER);
                     robot.liftMotorRight.setPower(UPLIFT_POWER);
+                    liftState = LiftState.LIFT_DUMP;
                     }
-                    */
-                    liftState = LiftState.LIFT_EXTEND;
+                    //liftState = LiftState.LIFT_DUMP;
                 }
                 break;
             case LIFT_EXTEND:
