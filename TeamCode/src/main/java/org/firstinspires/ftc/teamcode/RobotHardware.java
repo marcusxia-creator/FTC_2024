@@ -15,6 +15,20 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
+/*
+Hardware config:
+Motor:
+Control hub motor: FL_Motor 0, BL_motor 1, FR_Motor,2, BR_Motor
+Expansion hub motor: VS_Motor_Left 0, VS_Motor_Right 1
+
+Servo:
+Intake_Servo 0, IntakeArm_Servo 1
+
+Color Sensor:
+Color_Sensor I2C 1
+
+ */
+
 public class RobotHardware {
     public DcMotorEx frontLeftMotor;
     public DcMotorEx backLeftMotor;
