@@ -41,7 +41,7 @@ public class RobotHardware {
     public DcMotorEx liftMotorRight;
     public Servo IntakeServo;
     public Servo IntakeArmServo;
-    //public ColorSensor Color_Sensor;
+    public ColorSensor Color_Sensor;
     
     public IMU imu;
     public HardwareMap hardwareMap;
