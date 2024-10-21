@@ -32,7 +32,7 @@ public class RobotDrive {
         this.powerFactor = powerFactor;
     }
 
-    public void init() {
+    public void Init() {
         // Initialize IMU from RobotHardware
         robot.initIMU();
         telemetryManager.update("Status", "Initializing...");
@@ -43,7 +43,7 @@ public class RobotDrive {
     }
 
     @SuppressLint("DefaultLocale")
-    public void driveLoop() {
+    public void DriveLoop() {
         // Toggle control mode
         if (gamepad.getButton(START) && !startPressed) {
             toggleControlMode();

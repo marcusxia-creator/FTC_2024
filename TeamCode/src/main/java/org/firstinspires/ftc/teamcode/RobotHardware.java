@@ -15,6 +15,20 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
+/*
+Hardware config:
+Motor:
+Control hub motor: FL_Motor 0, BL_motor 1, FR_Motor,2, BR_Motor
+Expansion hub motor: VS_Motor_Left 0, VS_Motor_Right 1
+
+Servo:
+IntakeArm_Servo 0, Intake_Servo 1
+
+Color Sensor:
+Color_Sensor I2C 1
+
+ */
+
 public class RobotHardware {
     public DcMotorEx frontLeftMotor;
     public DcMotorEx backLeftMotor;
@@ -27,7 +41,7 @@ public class RobotHardware {
     public DcMotorEx liftMotorRight;
     public Servo IntakeServo;
     public Servo IntakeArmServo;
-    public ColorSensor Color_Sensor;
+    //public ColorSensor Color_Sensor;
     
     public IMU imu;
     public HardwareMap hardwareMap;
@@ -48,7 +62,7 @@ public class RobotHardware {
         IntakeArmServo = hardwareMap.get(Servo.class, "IntakeArm_Servo");
 
     //set color sensor
-        Color_Sensor = hardwareMap.get(ColorSensor.class,"Color_Sensor");
+        //Color_Sensor = hardwareMap.get(ColorSensor.class,"Color_Sensor");
 
     // set odometry
         //leftodometry = new MotorEx(hardwareMap, "FL_Motor");// set odometry

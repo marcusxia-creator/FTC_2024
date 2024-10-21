@@ -39,44 +39,42 @@ public class FiniteMachineStateArm {
         LIFT_RETRACT
     }
 
-
     private LiftState liftState = LiftState.LIFT_START; // Persisting state
     private ElapsedTime liftTimer = new ElapsedTime(); // Timer for controlling dumping time
 
-    final double DUMP_IDLE;   // Idle position for the dump servo
-    final double DUMP_DEPOSIT; // Dumping position for the dump servo
-    final double DUMP_TIME;   // Time for dumping action in seconds
-    final int LIFT_LOW;       // Encoder position for the low position
-    final int LIFT_MID;      // Encoder position for the high position
-    final int LIFT_HIGH;      // Encoder position for the high position
-    final double UPLIFT_POWER;
-    final double DOWNLIFT_POWER;
-    final double INTAKE_IDLE;
-    final double INTAKE_DUMP;
-    final double RETRACT_TIME;
+    final double DUMP_IDLE;     // Idle position for the dump servo
+    final double DUMP_DEPOSIT;  // Dumping position for the dump servo
+    final double DUMP_TIME;     // Time for dumping action in seconds
+    final int LIFT_LOW;         // Encoder position for the low position
+    final int LIFT_MID;         // Encoder position for the high position
+    final int LIFT_HIGH;        // Encoder position for the high position
+    final double UPLIFT_POWER;  // uplife power
+    final double DOWNLIFT_POWER;// downwards power
+    final double INTAKE_IDLE;   // intake idling position
+    final double INTAKE_DUMP;   // intake dump position
+    final double RETRACT_TIME;  // retract waiting time
 
-    public void init() {
+    public void Init() {
         colorSensor = new Color_sensor(robot);
         liftTimer.reset();
         robot.liftMotorLeft.setTargetPosition(LIFT_LOW);
         robot.liftMotorRight.setTargetPosition(LIFT_LOW);
         robot.liftMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.liftMotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.liftMotorLeft.setPower(0.1); // Make sure lift motor is on
+        robot.liftMotorLeft.setPower(0.1);                                          // Make sure lift motor is on
         robot.liftMotorRight.setPower(0.1);
         robot.IntakeArmServo.setPosition(DUMP_IDLE);
         robot.IntakeServo.setPosition(INTAKE_IDLE);
-
     }
 
-    public void armLoop() {
+    public void VsArmLoop() {
         // Display current lift state and telemetry feedback
         switch (liftState) {
             case LIFT_START:
                 // Debounce the button press for starting the lift extend
                 if (gamepad.getButton(GamepadKeys.Button.X) && debounceTimer.seconds() > DEBOUNCE_THRESHOLD) {
                     debounceTimer.reset();
-                    if ((colorSensor.getColor()[0] < 220)||(colorSensor.getColor()[2] < 225)) {
+                    //if ((colorSensor.getColor()[0] < 220)||(colorSensor.getColor()[2] < 225)) {
                     robot.liftMotorLeft.setTargetPosition(LIFT_HIGH);
                     robot.liftMotorRight.setTargetPosition(LIFT_HIGH);
                     robot.liftMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -84,14 +82,14 @@ public class FiniteMachineStateArm {
                     robot.liftMotorLeft.setPower(UPLIFT_POWER);
                     robot.liftMotorRight.setPower(UPLIFT_POWER);
                     liftState = LiftState.LIFT_EXTEND;
-                   } else {robot.liftMotorLeft.setTargetPosition(LIFT_MID);
+                   //} else {robot.liftMotorLeft.setTargetPosition(LIFT_MID);
                     robot.liftMotorRight.setTargetPosition(LIFT_MID);
                     robot.liftMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.liftMotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.liftMotorLeft.setPower(UPLIFT_POWER);
                     robot.liftMotorRight.setPower(UPLIFT_POWER);
                     liftState = LiftState.LIFT_DUMP;
-                    }
+                    //}
                     //liftState = LiftState.LIFT_DUMP;
                 }
                 break;
