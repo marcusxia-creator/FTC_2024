@@ -75,7 +75,6 @@ public class BasicTeleOps extends OpMode {
         telemetryManager.update("Servo Intake Arm position", robot.IntakeArmServo.getPosition());
         telemetryManager.update("lift motor TP", robot.liftMotorLeft.getTargetPosition());
         telemetryManager.update("Right motor TP", robot.liftMotorRight.getTargetPosition());
-        telemetryManager.update("IntakeArm Servo", robot.IntakeArmServo.getPosition());
     }
 
     public void stop() {
