@@ -75,19 +75,9 @@ public class RobotDrive {
         setMecanumDrivePower(drive, strafe, rotate, currentHeading);
 
         // Update telemetry with the latest data
-        updateTelemetry(drive, strafe, rotate, currentHeading);
+        // empty
     }// end of driveloop
 
-   private void updateTelemetry(double drive, double strafe, double rotate, double currentHeading) {
-        telemetryManager.update("Run Time", debounceTimer.seconds());
-        telemetryManager.update("IMU Angle", currentHeading);
-        telemetryManager.update("Drive Power", drive);
-        telemetryManager.update("Strafe Power", strafe);
-        telemetryManager.update("Rotate Power", rotate);
-        telemetryManager.update("Motor Velocities", String.format("LF:%g, RF:%g, LB:%g, RB:%g",
-                getVelocity()[0], getVelocity()[1], getVelocity()[2], getVelocity()[3]));
-        telemetryManager.update("Control Mode", controlMode.toString());
-    }//end of Telemetry
 
     private double getRobotHeading() {
         // Get the robot's heading from IMU

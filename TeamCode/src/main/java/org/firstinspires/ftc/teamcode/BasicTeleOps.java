@@ -61,12 +61,12 @@ public class BasicTeleOps extends OpMode {
         depositArmDrive.VsArmLoop();
 
         // Real-time telemetry data to Driver Station
-        telemetry.addData("Front Left Motor Power", robot.frontLeftMotor.getPower());
-        telemetry.addData("Front Right Motor Power", robot.frontRightMotor.getPower());
-        telemetry.addData("Back Left Motor Power", robot.backLeftMotor.getPower());
-        telemetry.addData("Back Right Motor Power", robot.backRightMotor.getPower());
-        telemetry.addData("Motor Left Position", robot.liftMotorLeft.getCurrentPosition());
-        telemetry.addData("Lift Motor Right Position", robot.liftMotorRight.getCurrentPosition());
+        telemetryManager.update("Front Left Motor Power", robot.frontLeftMotor.getPower());
+        telemetryManager.update("Front Right Motor Power", robot.frontRightMotor.getPower());
+        telemetryManager.update("Back Left Motor Power", robot.backLeftMotor.getPower());
+        telemetryManager.update("Back Right Motor Power", robot.backRightMotor.getPower());
+        telemetryManager.update("Motor Left Position", robot.liftMotorLeft.getCurrentPosition());
+        telemetryManager.update("Lift Motor Right Position", robot.liftMotorRight.getCurrentPosition());
         //telemetryManager.update("Color Sensor red", colorSensor.getColor()[0]);
         //telemetryManager.update("Color Sensor green", colorSensor.getColor()[1]);
         //telemetryManager.update("Color Sensor blue", colorSensor.getColor()[2]);
@@ -75,6 +75,7 @@ public class BasicTeleOps extends OpMode {
         telemetryManager.update("Servo Intake Arm position", robot.IntakeArmServo.getPosition());
         telemetryManager.update("lift motor TP", robot.liftMotorLeft.getTargetPosition());
         telemetryManager.update("Right motor TP", robot.liftMotorRight.getTargetPosition());
+        telemetryManager.update("IntakeArm Servo", robot.IntakeArmServo.getPosition());
     }
 
     public void stop() {

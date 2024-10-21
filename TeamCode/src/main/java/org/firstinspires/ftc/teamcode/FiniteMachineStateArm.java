@@ -83,12 +83,12 @@ public class FiniteMachineStateArm {
                     robot.liftMotorRight.setPower(UPLIFT_POWER);
                     liftState = LiftState.LIFT_EXTEND;
                    //} else {robot.liftMotorLeft.setTargetPosition(LIFT_MID);
-                    robot.liftMotorRight.setTargetPosition(LIFT_MID);
-                    robot.liftMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.liftMotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.liftMotorLeft.setPower(UPLIFT_POWER);
-                    robot.liftMotorRight.setPower(UPLIFT_POWER);
-                    liftState = LiftState.LIFT_DUMP;
+                    //robot.liftMotorRight.setTargetPosition(LIFT_MID);
+                    //robot.liftMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    //robot.liftMotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    //robot.liftMotorLeft.setPower(UPLIFT_POWER);
+                    //robot.liftMotorRight.setPower(UPLIFT_POWER);
+                    //liftState = LiftState.LIFT_DUMP;
                     //}
                     //liftState = LiftState.LIFT_DUMP;
                 }
